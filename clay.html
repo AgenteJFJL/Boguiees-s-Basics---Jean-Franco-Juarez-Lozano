@@ -1,11 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boguiee's Basics</title>
 </head>
-<body>
-    
+<style>
+    .Boguiee {
+        font-family: cursive;
+    }
+    #botonEnviar {
+        background-color: black;
+        color: palegoldenrod;
+        border: none;
+        border-radius: 8px;
+        /*quiero ponerle bordes suaves al boton*/
+        padding: 12px 24px;
+        cursor:  grabbing;
+        font-family: cursive;
+    }
+</style>
+<body style="background-color: palegoldenrod; margin: 0;">
+    <!--Primer div que se mostrara al principio-->
+    <div id="Entrada" style="display:flex; justify-content: center; gap: 40px; padding: 60px;">
+        <img src="" alt="Booguie dice Holaaaa" style="width:200px;">
+        <div style="padding: 25px">
+
+            <h1 style="color: 603534; font-family: cursive;" > Bienvenido a BB</h1>
+            <p class="Boguiee">Boguiee: Introduce tus datos para juegar, es como una especie de inicio de sesión</p>
+            <p class="Boguiee">Psst, debes tener al menos 10 años para jugar...</p>
+
+            <label for="nombreInput">
+                Ingresa tu nombre!
+            </label>
+            <input type="text" id="nombreInput" name="Escribe tu nombre">
+
+            <label for="fechaInput">
+                Ahora, debes de ingresar tu fecha de nacimiento
+            </label>
+            <input type="date" id="fechaInput">
+
+            <button id="botonEnviar">Enviar datos</button>
+        </div>
+    </div>
 </body>
 </html>
