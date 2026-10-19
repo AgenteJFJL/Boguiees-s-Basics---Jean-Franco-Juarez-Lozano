@@ -1,6 +1,10 @@
-MIT License
+# Project License
+
+## Source Code
+The source code of this project is licensed under the MIT License.
 
 Copyright (c) 2026 Tato
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +23,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Images and Media assets
+Copyright (c) 2026 Tato. All rights reserved.
+
+The images, logos, and graphic assets contained within this repository (specifically located in the `/images` folder) are the intellectual property of the author. 
+
+NO permission is granted to copy, modify, distribute, display, or use these media files for any commercial or personal purpose without the express, prior written consent of the copyright owner.
