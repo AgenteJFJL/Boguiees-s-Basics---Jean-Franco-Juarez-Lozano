@@ -1,8 +1,8 @@
 //primero escuchamos el click del boton enviar
 document.getElementById("botonEnviar").addEventListener("click", function () {
     //aqui conseguimos las variables constantes dle nombre y la fecha
-    const nombre = getElementById("nombreInput").value;
-    const fecha = getElementById("fechaInput").value;
+    const nombre = document.getElementById("nombreInput").value;
+    const fecha = document.getElementById("fechaInput").value;
     //primera validacion, ver si el nombre es vacio
     if (nombre.trim() === "" || fecha === ""){
         accesoDenegado();
@@ -11,7 +11,7 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
 
     //con metodos de Date, calculamos la edad
     const hoy = new Date();                    
-    const nacimiento = new Date(fechaInput);
+    const nacimiento = new Date(fecha);
 
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
 
