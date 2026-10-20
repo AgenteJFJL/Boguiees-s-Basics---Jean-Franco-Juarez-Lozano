@@ -45,5 +45,5 @@ function accesoDenegado() {
 
   // botón continuar del panel (aquí irá el juego más adelante)
   function empezarJuego() {
-    //luego lo continuo
+    //luego lo continuo por ahora sólo esto
   }
