@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boguiee's Basics</title>
-    <script src="clay.js" defer></script> 
+    <script src="clay.js" defer></script>
 </head>
 <style>
     .Boguiee {
@@ -22,7 +22,8 @@
         cursor: grabbing;
         font-family: cursive;
     }
-    .atributo{
+
+    .atributo {
         font-family: cursive;
         text-decoration: underline;
 
@@ -68,12 +69,57 @@
         <div>
             <h1 style="color: #603534; font-family: cursive;">¡Bienvenido!</h1>
             <p class="atributo">Nombre: </p><span id="presentNombre" class="txtNombre"></span>
-            <p class="atributo">Edad: </p><span id="presentEdad" class="Años"></span> 
+            <p class="atributo">Edad: </p><span id="presentEdad" class="Años"></span>
             <h3> ¡Ahora puedes juegar!</h3>
             <button class="boton" onclick="empezarJuego()">Continuar</button>
         </div>
     </div>
-    <!--probando el cambio de usuario-->
+    <!--Cuarto div, selecciona el modo, está oculto-->
+    <div id="divSelectJuego" style="display:none; justify-content: center; gap: 40px; padding: 60px;">
+        <h1>Elige un modo de juego</h1>
+        <!--Este sub div tiene las opciones-->
+        <div style="display:flex; justify-content: center; gap: 40px; padding: 60px;">
+            <button onclick="empezarMates()" class="boton">Matemáticas</button>
+            <button onclick="empezarGeogradia()" class="boton">Geografia(proximamente)</button>
+            <button onclick="empezarDialogo()" class="boton">¡Habla con Boguiee!(proximamente)</button>
+        </div>
+    </div>
+
+    <!--Quinto Div, este es el del juego, y está oculto por ahora-->
+    <div id="divJuego" style="display: none; padding: 30px;">
+        <!--subdiv para el boton de volver al panel-->
+        <div>
+            <button onclick="confirmarVolver()" class="boton"> Volver al panel</button>
+            <span id="txtProgreso" style="font-weight: bold;font-size: 18px;"></span>
+        </div>
+        <!--zona del juego, donde el personaje pregunta y respuesta-->
+        <div
+            style="display: flex; gap: 30px; margin-top: 30px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+            <!--aqui la pregunt-->
+            <div>
+                <img src="" alt="Boguiee pregunta">
+                <div>
+                    <p id="txtPregunta"></p>
+                    <!--Aqui viene la pista-->
+                    <div id="divPista" style="display: none; padding: 10px;">
+                        <b>Pista: </b> <span id="txtPista"></span>
+                    </div>
+
+                </div>
+                <div>
+                    <div id="divOpciones" style="display: flex; flex-wrap: wrap; gap:10px;"></div>
+                </div>
+                <!--La bombilla gigante que al clickear te muestra una pista de la pregunta-->
+                <div>
+                    <button type="button" onclick="mostrarPista()" title="Ver pista"
+                        style="background-color: none; border: none; cursor: help">
+                        <img src="" alt="bombilla gigante">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Sexto div, el game over, puede ser victoria o derrota-->
 </body>
 
 </html>
