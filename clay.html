@@ -22,6 +22,11 @@
         cursor: grabbing;
         font-family: cursive;
     }
+    .atributo{
+        font-family: cursive;
+        text-decoration: underline;
+
+    }
 </style>
 
 <body style="background-color: palegoldenrod; margin: 0;">
@@ -62,8 +67,9 @@
         <img src="" alt="Boguiee te saluda!!">
         <div>
             <h1 style="color: #603534; font-family: cursive;">¡Bienvenido!</h1>
-            <p>Nombre: </p><span id="presentNombre" class="txtNombre"></span>
-            <p>Edad: </p><span id="presentEdad" class="Años"></span> <span> ¡Ahora puedes juegar!</span>
+            <p class="atributo">Nombre: </p><span id="presentNombre" class="txtNombre"></span>
+            <p class="atributo">Edad: </p><span id="presentEdad" class="Años"></span> 
+            <h3> ¡Ahora puedes juegar!</h3>
             <button class="boton" onclick="empezarJuego()">Continuar</button>
         </div>
     </div>

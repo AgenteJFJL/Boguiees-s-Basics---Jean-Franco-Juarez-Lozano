@@ -27,7 +27,7 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
     //si todo salio bien, será el panel el que se muestre y los demás se ocultarán
     document.getElementById("divEntrada").style.display  = "none";
     document.getElementById("divDenegado").style.display = "none";
-    document.getElementById("divPanel").style.display    = "block";
+    document.getElementById("divPanel").style.display    = "flex";
 });
 
 //ahora mostramos el acceso denegado con esa funcion
