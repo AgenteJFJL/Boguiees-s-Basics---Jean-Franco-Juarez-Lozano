@@ -80,7 +80,7 @@
         <!--Este sub div tiene las opciones-->
         <div style="display:flex; justify-content: center; gap: 40px; padding: 60px;">
             <button onclick="empezarMates()" class="boton">Matemáticas</button>
-            <button onclick="empezarGeogradia()" class="boton">Geografia(proximamente)</button>
+            <button onclick="empezarGeografia()" class="boton">Geografia</button>
             <button onclick="empezarDialogo()" class="boton">¡Habla con Boguiee!(proximamente)</button>
         </div>
     </div>
@@ -137,7 +137,39 @@
         <button class="boton" onclick="volverPanel()">Volver al panel</button>
 
     </div>
-
+    <!--Séptimo div, el modo de juego de Geografía-->
+    <div id="divGeoJuego" style="display: none; padding: 30px;">
+        <!--progreso volver como el anterior-->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span id="txtProgresoGeo"></span>
+            <button onclick="confirmarVolverGeo" class="button">Volver al panel</button>
+        </div>
+        <!--Pregunta-->
+        <div style="display:flex; gap:30px; margin-top: 30px; justify-content: center;flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px; max-width: 500px; display: flex; gap: 15px; align-items: flex-start;">
+                <img src="" alt="Boguiee te dice...">
+                <div style="padding:18px;">
+                    <p id="txtPreguntaGeo"></p>
+                </div>
+            </div>
+            <div>
+                <img img="imgGeo" src="" alt="imagen pregunta geo">
+            </div>
+        </div>
+        <!--Alternativass-->
+        <div style="display: flex; gap: 30px; margin-top: 20px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+            <div id="divOpcionesGeo" style="flex: 1; min-width: 280px; max-width: 500px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            <button type="button" onclick="mostrarPistaGeo()" title="Ver pista"
+                        style="background-color: none; border: none; cursor: help">
+                        <img src="" alt="bombilla gigante">
+            </button>
+        </div>
+        <!--pista-->
+        <div id="divPistaGeo" style="display:none; padding:10px;">
+            <b>Pista: </b> <span id="txtPistaGeo"></span>
+        </div>
+    </div>
+    
 </body>
 
 </html>

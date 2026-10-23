@@ -59,6 +59,7 @@ function mostrarPantalla(id) {
     "divSelectJuego",
     "divJuego",
     "divGameOver",
+    "divGeoJuego",
   ];
   //ocultamos todos
   for (let i = 0; i < ids.length; i++) {
