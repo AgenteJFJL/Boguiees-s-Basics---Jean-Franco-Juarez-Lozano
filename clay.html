@@ -75,7 +75,7 @@
         </div>
     </div>
     <!--Cuarto div, selecciona el modo, está oculto-->
-    <div id="divSelectJuego" style="display:none; justify-content: center; gap: 40px; padding: 60px;">
+    <div id="divSelectJuego" style="display:none; justify-content: center; gap: 40px; padding: 60px; flex-direction: column; align-items: center;">
         <h1>Elige un modo de juego</h1>
         <!--Este sub div tiene las opciones-->
         <div style="display:flex; justify-content: center; gap: 40px; padding: 60px;">
@@ -86,19 +86,19 @@
     </div>
 
     <!--Quinto Div, este es el del juego, y está oculto por ahora-->
-    <div id="divJuego" style="display: none; padding: 30px;">
+    <div id="divJuego" style="display: none; padding: 30px; flex-direction: column; align-items: center;">
         <!--subdiv para el boton de volver al panel-->
-        <div>
-            <button onclick="confirmarVolver()" class="boton"> Volver al panel</button>
+        <div style="flex-direction: row; display: flex; align-items: center; gap: 20px;">
+            <button onclick="confirmarVolver()" class="boton" style="gap: 10px;"> Volver al panel</button>
             <span id="txtProgreso" style="font-weight: bold;font-size: 18px;"></span>
         </div>
         <!--zona del juego, donde el personaje pregunta y respuesta-->
         <div
-            style="display: flex; gap: 30px; margin-top: 30px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+            style="display: flex; gap: 30px; margin-top: 30px; flex-direction: column; align-items: center;">
             <!--aqui la pregunt-->
-            <div>
-                <img src="" alt="Boguiee pregunta">
+            <div style="display: flex; justify-content: center; gap: 20px; padding: 20px; flex-direction: column; align-items: center;">
                 <div>
+                    <img src="" alt="Boguiee pregunta" style="gap:10px;">
                     <p id="txtPregunta"></p>
                     <!--Aqui viene la pista-->
                     <div id="divPista" style="display: none; padding: 10px;">
@@ -110,7 +110,7 @@
                     <div id="divOpciones" style="display: flex; flex-wrap: wrap; gap:10px;"></div>
                 </div>
                 <!--La bombilla gigante que al clickear te muestra una pista de la pregunta-->
-                <div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
                     <button type="button" onclick="mostrarPista()" title="Ver pista"
                         style="background-color: none; border: none; cursor: help">
                         <img src="" alt="bombilla gigante">
@@ -120,16 +120,24 @@
         </div>
     </div>
     <!--Sexto div, el game over, puede ser victoria o derrota-->
-    <div id="divGameOver" style="display: none; text-align: center; padding: 40px;">
-        <h1 id="tituloFinal" style="font-size: 48px;">FIN DEL JUEGO</h1>
-        <p id="txtfraseGameOver" style="font-size: 20px;"></p>
-        <img src="" alt="OH NO HERMANO">
-        <div style="padding: 10ox 20px;">
-            <span id="txtFraseBoguiee"class="Boguiee"></span>
+    <div id="divGameOver" style="display: none; flex-direction: column; align-items: center; gap: 20px; padding: 40px;">
+        <div>
+            <h1 id="tituloFinal" style="font-size: 48px; margin: 0;"></h1>
         </div>
-        <br><br>
-        <button class="boton" onclick="volverPanel">VOlver al panel</button>
+
+        <div style="display: flex; direction: row; align-items: center; gap: 20px;">
+            <img src="" alt="OH NO HERMANO" style="max-width: 150px; height: auto;">
+            <p id="txtfraseGameOver" style="font-size: 20px; margin: 0;"></p>
+        </div>
+
+        <div style="padding: 10px 20px;">
+            <span id="txtFraseBoguiee" class="Boguiee"></span>
+        </div>
+
+        <button class="boton" onclick="volverPanel()">Volver al panel</button>
+
     </div>
+
 </body>
 
 </html>

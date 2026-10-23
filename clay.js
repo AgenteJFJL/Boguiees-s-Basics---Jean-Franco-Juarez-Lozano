@@ -98,7 +98,7 @@ const bancoMatematicas = [
     correcta: "√-1",
     pista: "Es la unidad imaginaria ¿Cual puede ser?",
     exito: "Bueno... excelente, recuerdas bien la primaria",
-    error: "Yay",
+    error: "Nada, sólo me imaginé la respuesta",
   },
   {
     pregunta: "Cuál es el resultado de dividir un float entre cero?",
@@ -217,7 +217,7 @@ para ello
 */
 function mezclar(array) {
   const copia = array.slice(); //una copia de las preguntas para no tocar el original
-  for (let i = copia.leght - 1; i > 0; i--) {
+  for (let i = copia.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = copia[i]; //intercambiamos
     copia[i] = copia[j];
@@ -239,8 +239,9 @@ function mostrarPregunta() {
   document.getElementById("txtPregunta").textContent = p.pregunta;
   document.getElementById("txtProgreso").textContent =
     "Pregunta " + (indiceActual + 1) + " de " + totalPreguntas;
-  //oculatamos pista cuando se va la preg
-  document.getElementById("divPista").textContent = "";
+  const divPista = document.getElementById("divPista");
+  document.getElementById("txtPista").textContent = "";
+  divPista.style.display = "none";
 
   //ahora creamos los botones de las 4 opciones
   const contenedor = document.getElementById("divOpciones");
@@ -265,11 +266,11 @@ function mostrarPista() {
   const divPista = document.getElementById("divPista");
 
   document.getElementById("txtPista").textContent = p.pista;
-  divPista.style.display = divPista.style.display === "none" ? "block" : "none";
+  divPista.style.display = divPista.style.display === "none" ? "flex" : "none";
 }
 //funcion de cuando el jugador responde
 function responder(opcionElegida) {
-  const p = pregintasPartida[indiceActual];
+  const p = preguntasPartida[indiceActual];
   const contenedor = document.getElementById("divOpciones");
 
   if (opcionElegida === p.correcta) {
@@ -314,7 +315,7 @@ const frasesDerrota = [
 function mostrarDerrota(mensajeError){
   const aleatorio = frasesDerrota[Math.floor(Math.random()*frasesDerrota.length)];
   
-  const titulo = document.getElementById("txtGameOver");
+  const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Fin del juego";
   titulo.style.fontWeight = "bold";
 
