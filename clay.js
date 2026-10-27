@@ -662,14 +662,14 @@ function mostrarGameOverGeo(fraseError){
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "FIN DEL JUEGO";
 
-  document.getElementById("txtFraseGameOver").textContent = fraseError;
+  document.getElementById("txtfraseGameOver").textContent = fraseError;
   document.getElementById("txtFraseBoguiee").textContent = aleatoria;
   mostrarPantalla("divGameOver");
 }
 function mostrarVictoriaGeo(){
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Yay";
-  document.getElementById("txtFraseGameOver").textContent = "Resolviste las 7 preguntas de geografia sin fallar yay";
+  document.getElementById("txtfraseGameOver").textContent = "Resolviste las 7 preguntas de geografia sin fallar yay";
   document.getElementById("txtFraseBoguiee").textContent = "¡Wow, definitivamente eres un terrícola!";
   mostrarPantalla("divGameOver");
 }
