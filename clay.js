@@ -548,7 +548,7 @@ const bancoGeografia = [
     pregunta: "Todos saben en qué país se encuentra Macchu Picchu, pero ¿EN qué famosa región se encuentra?",
     opciones:["Áncash","Cajamarca","Callao","Cuzco"],
     correcta: "Cuzco",
-    pista: "Si viste la pelidel EMperador y sus locuras, entonces recordarás que la respuesta es mencionada muchas veces,de hecho es el nombre del protagonista",
+    pista: "Si viste la peli del Emperador y sus locuras, entonces recordarás que la respuesta es mencionada muchas veces,de hecho es el nombre del protagonista",
     exito: "Heh, lo sabías por la peli ¿No? Tal vez deba dejar de poner pistas tan sencillas, o para nada útiles.",
     error: "C kronk",
     imagen: ""
@@ -557,9 +557,9 @@ const bancoGeografia = [
     pregunta: "Aquí menciono países cuyo nombre completo son más de 1 palabra, uno de ellos sí que únicamente tiene una palabra ¿Cuál es?",
     opciones:["Salvador","Arabia","Singapur","Corea"],
     correcta: "Singapur",
-    pista: "",
-    exito: "",
-    error: "",
+    pista: "No es que haya muchos países con más de 1 palabra en su nombre como para que te olvides",
+    exito: "Singapur es el siguiente país que quiero visitar, convirtieron una isla de pescadores en una potencia",
+    error: "Ni mencionar a Cabo Verde, Estados Unidos, Reino Unido, El Caribe, Nueva Guinea, etc.",
     imagen: ""
    }
    
