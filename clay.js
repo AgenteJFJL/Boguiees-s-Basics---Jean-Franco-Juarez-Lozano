@@ -11,9 +11,18 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
 
   //con metodos de Date, calculamos la edad
   const hoy = new Date();
-  const nacimiento = new Date(fecha);
-
+  const nacimiento = new Date(fecha + "T00:00:00");
   let edad = hoy.getFullYear() - nacimiento.getFullYear();
+
+  const cumpleanosEsteAnio = new Date(
+    hoy.getFullYear(),
+    nacimiento.getMonth(),
+    nacimiento.getDate()
+  );
+
+  if (hoy < cumpleanosEsteAnio) {
+    edad--;
+  }
 
   //ahora validamos la edad minima
   if (edad < 10) {
@@ -48,10 +57,13 @@ function volverPanel() {
 }
 //boton del div del juego
 function empezarMates() {
-  mostrarPantalla();
+  mostrarPantalla("divJuego");
+  mostrarPregunta();
 }
 
 function mostrarPantalla(id) {
+  if (!id) return;
+
   const ids = [
     "divEntrada",
     "divDenegado",
@@ -63,11 +75,16 @@ function mostrarPantalla(id) {
   ];
   //ocultamos todos
   for (let i = 0; i < ids.length; i++) {
-    document.getElementById(ids[i]).style.display = "none";
+    const pantalla = document.getElementById(ids[i]);
+    if (pantalla) {
+      pantalla.style.display = "none";
+    }
   }
   //mostrar
   const el = document.getElementById(id);
-  el.style.display = "flex";
+  if (el) {
+    el.style.display = "flex";
+  }
 }
 
 //BANCO DE PREGUNTAS, esta serán las de matematica aqui estará guardado
@@ -252,8 +269,8 @@ function mostrarPregunta() {
     const opcion = p.opciones[i];
     const boton = document.createElement("button");
     boton.textContent = opcion;
-    boton.style.padding = "12px 24 px";
-    boton.style.fontSize = "18 px";
+    boton.style.padding = "12px 24px";
+    boton.style.fontSize = "18px";
 
     boton.onclick = function () {
       responder(opcion);
@@ -285,21 +302,21 @@ function responder(opcionElegida) {
 
     const btn = document.createElement("button");
     btn.textContent = "Siguiente pregunta";
-    btn.style.padding = "10px 22 px";
-    btn.style.fontSize = "18 px";
+    btn.style.padding = "10px 22px";
+    btn.style.fontSize = "18px";
     btn.style.cursor = "pointer";
-    btn.onclick=function(){
+    btn.onclick = function () {
       indiceActual++;
-      if(indiceActual>=totalPreguntas){
+      if (indiceActual >= totalPreguntas) {
         mostrarVictoria();
       }
-      else{
+      else {
         mostrarPregunta();
       }
     };
     contenedor.appendChild(btn);
   }
-  else{
+  else {
     mostrarDerrota(p.error);
   }
 }
@@ -313,9 +330,9 @@ const frasesDerrota = [
   "No me rendiré, no importa que mi orgullo sea destruido por completo, ¡Mis deseos de ponerme a prueba me levantarán porque son muy grandes! ",
   "Oh no hermano."
 ];
-function mostrarDerrota(mensajeError){
-  const aleatorio = frasesDerrota[Math.floor(Math.random()*frasesDerrota.length)];
-  
+function mostrarDerrota(mensajeError) {
+  const aleatorio = frasesDerrota[Math.floor(Math.random() * frasesDerrota.length)];
+
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Fin del juego";
   titulo.style.fontWeight = "bold";
@@ -325,22 +342,341 @@ function mostrarDerrota(mensajeError){
 
   mostrarPantalla("divGameOver");
 }
-function mostrarVictoria(){
-  const titulo=document.getElementById("tituloFinal");
-  titulo.textContent="EXITOTO";
-  titulo.style.fontWeight="bold";
+function mostrarVictoria() {
+  const titulo = document.getElementById("tituloFinal");
+  titulo.textContent = "EXITOTO";
+  titulo.style.fontWeight = "bold";
 
-  document.getElementById("txtfraseGameOver").textContent="¡Felicidades! Has completado el juego con éxito.";
-  document.getElementById("txtFraseBoguiee").textContent="Hehe, ¿Quien diría que aún tienes recuerdos que valen la pena del bachillerato?";
+  document.getElementById("txtfraseGameOver").textContent = "¡Felicidades! Has completado el juego con éxito.";
+  document.getElementById("txtFraseBoguiee").textContent = "Hehe, ¿Quien diría que aún tienes recuerdos que valen la pena del bachillerato?";
 
   mostrarPantalla("divGameOver");
 }
 //volver al panel
-function confirmarVolver(){
+function confirmarVolver() {
   const seguro = confirm("Si vuelves perderás el progreso Oh noo. ");
-  if(seguro){
+  if (seguro) {
     mostrarPantalla("divPanel");
   }
 }
-//MAS PROXIMAMENTE
 
+//BANCO DE PREGUNTAS DE GEOGRAFIA
+const bancoGeografia = [
+  /* Plantilla:
+  {
+    pregunta: "",
+    opciones:["","","",""],
+    correcta: "",
+    pista: "",
+    exito: "",
+    error: "",
+    imagen: ""
+   },
+  */
+  {
+    pregunta: "¿Cómo se llama el país más grande de América del Sur?",
+    opciones: ["México", "Brasil", "Bolivia", "México del Sur"],
+    correcta: "Brasil",
+    pista: "EL unico de ellos que no habla español",
+    exito: "¡Brasiul o macaco!",
+    error: "Mexico no es de América del Sur, tonto.",
+    imagen: ""
+  },
+  {
+    pregunta: "¿Cómo se llama aquel planeta que en 2006 dejó de serlo en nuestro vecindario planetario?",
+    opciones:["Caronte","Putín","Plutón","Calisto"],
+    correcta: "Plutón",
+    pista: "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
+    exito: "Tal vez debí reformular la pregunta para hacerla más dificil.",
+    error: "¡¡ELEGISTE AL PRESIDENTE????! AAAAAA",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Cuál es el país con la tasa de natalidad más baja del mundo?",
+    opciones:["Groenlandia","España","Japón","SurCorea"],
+    correcta: "SurCorea",
+    pista: "Chinos macacos",
+    exito: "Efectivamente, Los surcoreanos podrían extinguirse para el próximo siglo, oof , ya no más kpop ni kdramas.",
+    error: "Lo siento, pero sorprendentemente el país más idealizado es el que menos hijos quiere.",
+    imagen: ""
+  },
+   {
+    pregunta: "¿Dentro de qué territorio se encuentra el Vaticano?",
+    opciones:["Francia","Reino Unido","Italia","Alemania"],
+    correcta: "Italia",
+    pista: "¿El papamóvil es católico?",
+    exito: "El Vaticano se encuentra en Roma, que escrito al revés es Amor, pero también se encuentra en Italia.",
+    error: "Peínate.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿En qué país se encuentra Nuevo México?",
+    opciones:["México","EEUU","SurMéxico","Perú"],
+    correcta: "EEUU",
+    pista: "¿De qué color es el conejo blanco?",
+    exito: "Nuevo México, estado de abogados, cotrabandistas, drogas, narcotráfico y una orgullosa narcocultura, se encuentra en Estados Unidos",
+    error: "Nuevo México es un estado de Disparos Unidos, no de Mexico.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿En qué país Nació CR7?",
+    opciones:["Brasil","Cristianolandia","Portugal","Perú"],
+    correcta: "Portugal",
+    pista: "CR7 habla portugués, pero aquí hay más de un país que se habla ese idioma.",
+    exito: "Pobre CR7 tuvo crecer viendo Dragon Ball en doblaje portugués.",
+    error: "CR7 nació en Portugal, no en Perú, aunque ya quisiera.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Qué país se disolvió en 1991 y dio lugar a países como Crocia, Serbia, Bosnia o Esovenia?",
+    opciones:["Yugoslavia","Kosovo","La Union Sovietica","Montenegro"],
+    correcta: "Yugoslavia",
+    pista: "Recuerda, uno de estos es un país que ya no está en el mapa, y hay otro que ni siquiera fue un país como tal.",
+    exito: "Me dio un perro coraje cómo un pueblo tan fuerte pudo disolverse por la corrupción de ambas potencias dominantes, lo que me hizo darme cuenta que jamás sería como mi gran ídolo Josip Broz TITO. Nunca podría unificar al pueblo cristiano con el musulmán, me dió tanta rabia como hambre, así que decidí robarle de nuevo la comida de mi hermana Maguiee.",
+    error: "Bueno, por algo estamos aquí y no estudiando letras.",
+    imagen: ""
+   },
+   {
+    pregunta: "El estrecho de Bering es el cuál según la teoría asiática de la población americana, fue un puente que se congeló durante la última glaciación de la tierra, donde los humanos primitivos cruzaron para llegar a América y poblarla, este estrecho une a Estados Unidos y a ...",
+    opciones:["Japón","Portugal","SurCorea","Rusia"],
+    correcta: "Rusia",
+    pista: "Tuvieron que venir de algún lado de Asia, pero ¿Cuál?",
+    exito: "¡Bien! ¡Recuerdas un poco de historia al parecer!",
+    error: "Okay, tal vez te hice rebuscar mucho en los recuerdos de la infancia.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Cuál es la capital de España?",
+    opciones:["Madrid","Provincia De Madrid","Comunidad Autónoma de Madrid","Madrid DC"],
+    correcta: "Madrid",
+    pista: "No te rayes",
+    exito: "En Madrid cunples tus sueños, hay trabajo por doquier, puedes tener una gran vivienda, la gente es de lo mejor y conectas con el resto... del mundo...",
+    error: "JAJA TE MAREÉ",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Cuál de estos países NO forma parte de los supremos poderes del BRICS?",
+    opciones:["Brasil","India","Corea","Rusia"],
+    correcta: "Corea",
+    pista: "Qué confuso, los Brics son siglas de la letra inicial de los nombres de estos países que dominan el mundo, ¿Cuál podrá ser?",
+    exito: "OBVIAMENTE, COREA NO SE COMPARA EN PODER CON CHINA MUAJAJAJAJAJAJAJAJJAAJJAAJAJAJA!!!!",
+    error: "Hay un impostor entre nosotros, uno que no quiere casarse.",
+    imagen: ""
+   },
+   {
+    pregunta: "Uno de estos países habla español como su lengua principal",
+    opciones:["Guyana","Surinam","Guinea","Brasil"],
+    correcta: "Guinea",
+    pista: "Identifica al país africano y habrás ganado",
+    exito: "Guinea es el unico país de África en el cual se habla español como lengua oficial.",
+    error: "Ya basta, ponte preguntas de Europa y no de otros lados que no me importan en lo más mínimo ¿Cómo esperas a que conteste estas preguntas?",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Qué ciudad atraviesa el muro de Berlín?",
+    opciones:["Berlín","Londres","Bélice","AlemaniaCity"],
+    correcta: "Berlín",
+    pista: "Sale en un video de entrevistando españoles sobre geografía ¿Podrás acertar?",
+    exito: "NO ME DIGAS!!!!!",
+    error: "Estaba seguro que ALemaniaCity tiene algo que ver con Berlín",
+    imagen: ""
+   },
+   {
+    pregunta: "¿EN qué continente está Asia?",
+    opciones:["Australia","America","Africa","Asia"],
+    correcta: "Asia",
+    pista: "Me has pillado chaval",
+    exito: "Hubo una vez en que dibujé conn 5 años una bandera del Perú con una piedra con ojos, alas y boca, era un niño, y era la evaluación sobre dibujo por fiestras patrias, iba a sacar un 10, pero sólo por una piedra, saqué un 9, desde entonces, no soy orgullosamente yandere.",
+    error: "Más suerte para la proxima chaval, traere preguntas menos dificiles.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿En qué planeta vivía la especie de Namekuseiyin?",
+    opciones:["Namek","Namekuseiyin","Namekusein","Tierra"],
+    correcta: "Namek",
+    pista: "Pobres los que vimos el anime, nos vamos a confundir, espero hayas leído el manga",
+    exito: "Oops se me ha colado esta pregunta",
+    error: "Oops se me ha colado esta pregunta",
+    imagen: ""
+   },
+   {
+    pregunta: "¿De qué país fue gobernante el señor Pol Pot?",
+    opciones:["Caribe","Camerún","Camboya","Colombia"],
+    correcta: "Camboya",
+    pista: "Uno de esos países sufrió un genocidio masivo que no convenía que saliera en los periódicos porque a nadie le importaba, ¿Quién podrá ser?",
+    exito: "ព្រះបានបោះបង់ចោលយើងហើយ",
+    error: "Cada vez se olvidan más de ellos.",
+    imagen: ""
+   },
+   {
+    pregunta: "Entre estos países con salida al mar, ¿Cuál es el más potencialmente sísmico?",
+    opciones:["Marruecos","Italia","Chile","Madagascar"],
+    correcta: "Chile",
+    pista: "Es bien sabido los países que se encuentran en el cinturón de fuego son los más potencialmente sísmicos, pero ¿Cuál de ellos se encuentra en él?",
+    exito: "Una vez fui de visita a CHile y no miento cuando digo que TODOS LOS DIAS hay un temblor, una persona que no está acostumbrada a ellos de seguro se mea encima",
+    error: "Ay por favor, solo hay que ver los memes de 2022",
+    imagen: ""
+   },
+   {
+    pregunta: "¿En que país se encuentra el Monte Everest?",
+    opciones:["Nepal","Japón","Malasia","Singapur"],
+    correcta: "Nepal",
+    pista: "En realidad hay 2 países que tienen su territorio, pero aquí sólo puse uno de ellos, uno es China, y lógicamente el otro está al lado suyo",
+    exito: "Nepal... la tranquila Nepal...",
+    error: "¿ALguna vez has escuchado el EAS alarm de Malasia? No lo busques porfa",
+    imagen: ""
+   },
+   {
+    pregunta: "¿Cuál es la capital de China?",
+    opciones:["Chengdu","Pekín","Hong Kong","Shangai"],
+    correcta: "Pekín",
+    pista: "Todos son ciudades de CHina, pero uno de ellos se caracteriza por compartir su nombre con una especie de pato.",
+    exito: "Pekín es la capital de China, donde hay ingenieros viviendo en la calle y ya no aceptan dinero físico. China es el futuro",
+    error: "Yo no hablo Taka Taka señor... ni siquiera lo voy a intentar.",
+    imagen: ""
+   },
+   {
+    pregunta: "¿QUién es el actual presidente de Venezuela?",
+    opciones:["Donald Trump","Edmundo Gonzáles","Delcy Rodríguez","Nicolás Maduro"],
+    correcta: "Delcy Rodríguez",
+    pista: "Uno de ellos ganó las elecciones de forma legítima, pero eso no lo hace presidente, si no, el que tenga poder en el gobierno o no.",
+    exito: "Oh, me sorprendes, aunque claro, con un poco de descarte podías adivinarlo, pero si de verdad lo sabías... tú no eres de aquí... ¿Verdad?",
+    error: "No pasa nada si no lo sabes, no estás obligado a saber cosas de un país que no tiene qué y no te importa.",
+    imagen: ""
+   },
+   {
+    pregunta: "Todos saben en qué país se encuentra Macchu Picchu, pero ¿EN qué famosa región se encuentra?",
+    opciones:["Áncash","Cajamarca","Callao","Cuzco"],
+    correcta: "Cuzco",
+    pista: "Si viste la pelidel EMperador y sus locuras, entonces recordarás que la respuesta es mencionada muchas veces,de hecho es el nombre del protagonista",
+    exito: "Heh, lo sabías por la peli ¿No? Tal vez deba dejar de poner pistas tan sencillas, o para nada útiles.",
+    error: "C kronk",
+    imagen: ""
+   },
+   {
+    pregunta: "Aquí menciono países cuyo nombre completo son más de 1 palabra, uno de ellos sí que únicamente tiene una palabra ¿Cuál es?",
+    opciones:["Salvador","Arabia","Singapur","Corea"],
+    correcta: "Singapur",
+    pista: "",
+    exito: "",
+    error: "",
+    imagen: ""
+   }
+   
+]
+
+let preguntasPartidaGeo=[];
+let indiceActualGeo=0;
+const totalPreguntasGeo=7;
+
+//partida de geogr
+function empezarGeografia(){
+  preguntasPartidaGeo = mezclar(bancoGeografia).slice(0, totalPreguntasGeo);
+  indiceActualGeo=0;
+  mostrarPantalla("divGeoJuego");
+  mostrarPreguntaGeo();
+}
+//funcion de mostrar pregunta geo
+function mostrarPreguntaGeo(){
+  const p = preguntasPartidaGeo[indiceActualGeo];
+  document.getElementById("txtPreguntaGeo").textContent = p.pregunta;
+  document.getElementById("txtProgresoGeo").textContent = "Pregunta " + (indiceActualGeo + 1) + " de " + totalPreguntasGeo;
+
+  const imgGeo = document.getElementById("imgGeo");
+  if (imgGeo) {
+    imgGeo.src = p.imagen || "";
+  }
+
+  const divPista = document.getElementById("divPistaGeo");
+  divPista.style.display = "none";
+  document.getElementById("txtPistaGeo").textContent = "";
+
+  const contenedor = document.getElementById("divOpcionesGeo");
+  contenedor.innerHTML = "";
+
+  for (let i = 0; i < p.opciones.length; i++) {
+    const opcion = p.opciones[i];
+    const boton = document.createElement("button");
+    boton.textContent = opcion;
+    boton.style.padding = "12px 24px";
+    boton.style.fontSize = "18px";
+    boton.style.cursor = "pointer";
+    boton.onclick = function () { responderGeo(opcion); };
+    contenedor.appendChild(boton);
+  }
+}
+function mostrarPistaGeo(){
+  const p = preguntasPartidaGeo[indiceActualGeo];
+  const divPista = document.getElementById("divPistaGeo");
+  const txtPista = document.getElementById("txtPistaGeo");
+
+  txtPista.textContent = p.pista;
+  divPista.style.display = divPista.style.display === "none" ? "block" : "none";
+}
+function responderGeo(opcionElegida){
+  const p = preguntasPartidaGeo[indiceActualGeo];
+  const contenedor = document.getElementById("divOpcionesGeo");
+
+  if (opcionElegida === p.correcta){
+    contenedor.innerHTML = "";
+
+    const mensaje = document.createElement("p");
+    mensaje.textContent = p.exito;
+    mensaje.style.fontSize = "20px";
+    mensaje.style.fontWeight = "bold";
+    contenedor.appendChild(mensaje);
+
+    const btn = document.createElement("button");
+    btn.textContent = "Siguiente";
+    btn.style.padding = "10px 22px";
+    btn.style.fontSize = "18px";
+    btn.style.cursor = "pointer";
+    btn.onclick = function(){
+      indiceActualGeo++;
+      if (indiceActualGeo >= totalPreguntasGeo){
+        mostrarVictoriaGeo();
+      }
+      else{
+        mostrarPreguntaGeo();
+      }
+    };
+    contenedor.appendChild(btn);
+  }
+  else{
+    mostrarGameOverGeo(p.error);
+  }
+}
+
+//frases aleatorias
+const frasesDerrotaGeo=[
+  "Vamos, tienes que demostrar que los españoles son los mejores en geografría básica!!",
+  "El mundo es tan grande y los guisantes tan pequeños, decía un lanzaguisantes mientras veía el cielo, lo veía y se sentía pequeño, porque era un lanzaguisantes.",
+  "Lástima, simplemente podías usar IA, aqui no hya limite de tiempo, los tramposos ya no somos mal vistos.",
+  "Había una vez un ángel, que brillaba, que brillaba y ya no brillaba, llegó un día en que se asimiló.",
+  "aeiou",
+  "CLICK AQUI PARA VER UN REPLAY (mentira)",
+  "Carlos estaría decepcionado"
+]
+function mostrarGameOverGeo(fraseError){
+  const aleatoria = frasesDerrotaGeo[Math.floor(Math.random()*frasesDerrotaGeo.length)];
+  const titulo = document.getElementById("tituloFinal");
+  titulo.textContent = "FIN DEL JUEGO";
+
+  document.getElementById("txtFraseGameOver").textContent = fraseError;
+  document.getElementById("txtFraseBoguiee").textContent = aleatoria;
+  mostrarPantalla("divGameOver");
+}
+function mostrarVictoriaGeo(){
+  const titulo = document.getElementById("tituloFinal");
+  titulo.textContent = "Yay";
+  document.getElementById("txtFraseGameOver").textContent = "Resolviste las 7 preguntas de geografia sin fallar yay";
+  document.getElementById("txtFraseBoguiee").textContent = "¡Wow, definitivamente eres un terrícola!";
+  mostrarPantalla("divGameOver");
+}
+//boton de volver al panel de geo
+function confirmarVolverGeo(){
+  const seguro = confirm ("si vuelves ahora perderas el progreso oooooh non");
+  if (seguro) {
+    mostrarPantalla("divPanel");
+  }
+}
