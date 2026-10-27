@@ -28,6 +28,176 @@
         text-decoration: underline;
 
     }
+
+    .geo-juego {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 30px;
+    }
+
+    .geo-cabecera,
+    .geo-pregunta,
+    .geo-respuestas,
+    .geo-pista {
+        width: min(100%, 1000px);
+    }
+
+    .geo-cabecera {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .geo-progreso {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .geo-pregunta {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
+        align-items: center;
+        gap: 30px;
+    }
+
+    .geo-personaje-pregunta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .geo-personaje {
+        width: 120px;
+        height: auto;
+        flex: 0 0 auto;
+    }
+
+    .geo-texto-pregunta {
+        font-size: 20px;
+    }
+
+    .geo-imagen {
+        width: 100%;
+        max-height: 280px;
+        object-fit: contain;
+    }
+
+    .geo-respuestas {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .geo-opciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .geo-opciones button {
+        padding: 12px 24px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .bombilla {
+        padding: 8px;
+        border: 0;
+        background: transparent;
+        cursor: help;
+    }
+
+    .bombilla-icon {
+        display: block;
+        font-size: 64px;
+        line-height: 1;
+    }
+
+    .geo-pista {
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(96, 53, 52, 0.08);
+    }
+
+    .mates-juego {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 30px;
+    }
+
+    .mates-cabecera,
+    .mates-pregunta,
+    .mates-respuestas,
+    .mates-pista {
+        width: min(100%, 1000px);
+    }
+
+    .mates-cabecera {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .mates-progreso {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .mates-pregunta {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .mates-personaje {
+        width: 120px;
+        height: auto;
+        flex: 0 0 auto;
+    }
+
+    .mates-texto-pregunta {
+        flex: 1;
+        padding: 18px;
+        border-radius: 8px;
+        background: rgba(96, 53, 52, 0.08);
+        font-size: 20px;
+    }
+
+    .mates-respuestas {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .mates-opciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .mates-opciones button {
+        padding: 12px 24px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .mates-pista {
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(96, 53, 52, 0.08);
+    }
 </style>
 
 <body style="background-color: palegoldenrod; margin: 0;">
@@ -86,37 +256,24 @@
     </div>
 
     <!--Quinto Div, este es el del juego, y está oculto por ahora-->
-    <div id="divJuego" style="display: none; padding: 30px; flex-direction: column; align-items: center;">
-        <!--subdiv para el boton de volver al panel-->
-        <div style="flex-direction: row; display: flex; align-items: center; gap: 20px;">
-            <button onclick="confirmarVolver()" class="boton" style="gap: 10px;"> Volver al panel</button>
-            <span id="txtProgreso" style="font-weight: bold;font-size: 18px;"></span>
+    <div id="divJuego" class="mates-juego" style="display: none;">
+        <div class="mates-cabecera">
+            <span id="txtProgreso" class="mates-progreso"></span>
+            <button onclick="confirmarVolver()" class="boton">Volver al panel</button>
         </div>
-        <!--zona del juego, donde el personaje pregunta y respuesta-->
-        <div
-            style="display: flex; gap: 30px; margin-top: 30px; flex-direction: column; align-items: center;">
-            <!--aqui la pregunt-->
-            <div style="display: flex; justify-content: center; gap: 20px; padding: 20px; flex-direction: column; align-items: center;">
-                <div>
-                    <img src="" alt="Boguiee pregunta" style="gap:10px;">
-                    <p id="txtPregunta"></p>
-                    <!--Aqui viene la pista-->
-                    <div id="divPista" style="display: none; padding: 10px;">
-                        <b>Pista: </b> <span id="txtPista"></span>
-                    </div>
-
-                </div>
-                <div>
-                    <div id="divOpciones" style="display: flex; flex-wrap: wrap; gap:10px;"></div>
-                </div>
-                <!--La bombilla gigante que al clickear te muestra una pista de la pregunta-->
-                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
-                    <button type="button" onclick="mostrarPista()" title="Ver pista"
-                        style="background-color: none; border: none; cursor: help">
-                        <img src="" alt="bombilla gigante">
-                    </button>
-                </div>
-            </div>
+        <div class="mates-pregunta">
+            <img class="mates-personaje" src="" alt="Boguiee te pregunta">
+            <p id="txtPregunta" class="mates-texto-pregunta"></p>
+        </div>
+        <div class="mates-respuestas">
+            <div id="divOpciones" class="mates-opciones"></div>
+            <button type="button" onclick="mostrarPista()" title="Ver pista"
+                aria-label="Mostrar u ocultar pista" class="mates-bombilla bombilla">
+                <span class="bombilla-icon" aria-hidden="true">💡</span>
+            </button>
+        </div>
+        <div id="divPista" class="mates-pista" style="display: none;">
+            <b>Pista: </b> <span id="txtPista"></span>
         </div>
     </div>
     <!--Sexto div, el game over, puede ser victoria o derrota-->
@@ -138,34 +295,32 @@
 
     </div>
     <!--Séptimo div, el modo de juego de Geografía-->
-    <div id="divGeoJuego" style="display: none; padding: 30px;">
+    <div id="divGeoJuego" class="geo-juego" style="display: none;">
         <!--progreso volver como el anterior-->
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <span id="txtProgresoGeo"></span>
+        <div class="geo-cabecera">
+            <span id="txtProgresoGeo" class="geo-progreso"></span>
             <button onclick="confirmarVolverGeo()" class="boton">Volver al panel</button>
         </div>
         <!--Pregunta-->
-        <div style="display:flex; gap:30px; margin-top: 30px; justify-content: center;flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 280px; max-width: 500px; display: flex; gap: 15px; align-items: flex-start;">
-                <img src="" alt="Boguiee te dice...">
-                <div style="padding:18px;">
-                    <p id="txtPreguntaGeo"></p>
-                </div>
+        <div class="geo-pregunta">
+            <div class="geo-personaje-pregunta">
+                <img class="geo-personaje" src="" alt="Boguiee te dice...">
+                <p id="txtPreguntaGeo" class="geo-texto-pregunta"></p>
             </div>
             <div>
-                <img id="imgGeo" src="" alt="imagen pregunta geo">
+                <img id="imgGeo" class="geo-imagen" src="" alt="imagen pregunta geo">
             </div>
         </div>
         <!--Alternativass-->
-        <div style="display: flex; gap: 30px; margin-top: 20px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
-            <div id="divOpcionesGeo" style="flex: 1; min-width: 280px; max-width: 500px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+        <div class="geo-respuestas">
+            <div id="divOpcionesGeo" class="geo-opciones"></div>
             <button type="button" onclick="mostrarPistaGeo()" title="Ver pista"
-                        style="background-color: none; border: none; cursor: help">
-                        <img src="" alt="bombilla gigante">
+                aria-label="Mostrar u ocultar pista" class="bombilla">
+                <span class="bombilla-icon" aria-hidden="true">💡</span>
             </button>
         </div>
         <!--pista-->
-        <div id="divPistaGeo" style="display:none; padding:10px;">
+        <div id="divPistaGeo" class="geo-pista" style="display:none;">
             <b>Pista: </b> <span id="txtPistaGeo"></span>
         </div>
     </div>
