@@ -1,7 +1,9 @@
+// edicion par ahacer que el nombre sea variable global
+let nombreJugador=""
 //primero escuchamos el click del boton enviar
 document.getElementById("botonEnviar").addEventListener("click", function () {
   //aqui conseguimos las variables constantes dle nombre y la fecha
-  const nombre = document.getElementById("nombreInput").value;
+  const nombreAn = document.getElementById("nombreInput").value;
   const fecha = document.getElementById("fechaInput").value;
   //primera validacion, ver si el nombre es vacio
   if (nombre.trim() === "" || fecha === "") {
@@ -29,9 +31,11 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
     accesoDenegado();
     return;
   }
+  //formatear el nombre con métodos string
+  nombreJugador = nombreAn.trim();
 
   //mostramos los nombres en pantalla en el panel
-  document.getElementById("presentNombre").textContent = nombre;
+  document.getElementById("presentNombre").textContent = nombreJugador;
   document.getElementById("presentEdad").textContent = edad;
   //si todo salio bien, será el panel el que se muestre y los demás se ocultarán
   mostrarPantalla("divPanel");
@@ -72,6 +76,9 @@ function mostrarPantalla(id) {
     "divJuego",
     "divGameOver",
     "divGeoJuego",
+    "divSeleccionHistoria",
+    "divCharla",
+    "divFinalCharla"
   ];
   //ocultamos todos
   for (let i = 0; i < ids.length; i++) {
