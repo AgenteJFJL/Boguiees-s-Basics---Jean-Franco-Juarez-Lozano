@@ -1,5 +1,5 @@
 // edicion par ahacer que el nombre sea variable global
-let nombreJugador=""
+let nombreJugador = "";
 //primero escuchamos el click del boton enviar
 document.getElementById("botonEnviar").addEventListener("click", function () {
   //aqui conseguimos las variables constantes dle nombre y la fecha
@@ -19,7 +19,7 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
   const cumpleanosEsteAnio = new Date(
     hoy.getFullYear(),
     nacimiento.getMonth(),
-    nacimiento.getDate()
+    nacimiento.getDate(),
   );
 
   if (hoy < cumpleanosEsteAnio) {
@@ -78,7 +78,7 @@ function mostrarPantalla(id) {
     "divGeoJuego",
     "divSeleccionHistoria",
     "divCharla",
-    "divFinalCharla"
+    "divFinalCharla",
   ];
   //ocultamos todos
   for (let i = 0; i < ids.length; i++) {
@@ -316,14 +316,12 @@ function responder(opcionElegida) {
       indiceActual++;
       if (indiceActual >= totalPreguntas) {
         mostrarVictoria();
-      }
-      else {
+      } else {
         mostrarPregunta();
       }
     };
     contenedor.appendChild(btn);
-  }
-  else {
+  } else {
     mostrarDerrota(p.error);
   }
 }
@@ -335,10 +333,11 @@ const frasesDerrota = [
   "I GET ANGRIER FOR EVERY PROBLEM YOU GET WRONG",
   "La segunda es la vencida, la tercera es la vencida... la cuarta es la...",
   "No me rendiré, no importa que mi orgullo sea destruido por completo, ¡Mis deseos de ponerme a prueba me levantarán porque son muy grandes! ",
-  "Oh no hermano."
+  "Oh no hermano.",
 ];
 function mostrarDerrota(mensajeError) {
-  const aleatorio = frasesDerrota[Math.floor(Math.random() * frasesDerrota.length)];
+  const aleatorio =
+    frasesDerrota[Math.floor(Math.random() * frasesDerrota.length)];
 
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Fin del juego";
@@ -354,8 +353,10 @@ function mostrarVictoria() {
   titulo.textContent = "EXITOTO";
   titulo.style.fontWeight = "bold";
 
-  document.getElementById("txtfraseGameOver").textContent = "¡Felicidades! Has completado el juego con éxito.";
-  document.getElementById("txtFraseBoguiee").textContent = "Hehe, ¿Quien diría que aún tienes recuerdos que valen la pena del bachillerato?";
+  document.getElementById("txtfraseGameOver").textContent =
+    "¡Felicidades! Has completado el juego con éxito.";
+  document.getElementById("txtFraseBoguiee").textContent =
+    "Hehe, ¿Quien diría que aún tienes recuerdos que valen la pena del bachillerato?";
 
   mostrarPantalla("divGameOver");
 }
@@ -387,207 +388,257 @@ const bancoGeografia = [
     pista: "EL unico de ellos que no habla español",
     exito: "¡Brasiul o macaco!",
     error: "Mexico no es de América del Sur, tonto.",
-    imagen: ""
+    imagen: "",
   },
   {
-    pregunta: "¿Cómo se llama aquel planeta que en 2006 dejó de serlo en nuestro vecindario planetario?",
-    opciones:["Caronte","Putín","Plutón","Calisto"],
+    pregunta:
+      "¿Cómo se llama aquel planeta que en 2006 dejó de serlo en nuestro vecindario planetario?",
+    opciones: ["Caronte", "Putín", "Plutón", "Calisto"],
     correcta: "Plutón",
-    pista: "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
+    pista:
+      "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
     exito: "Tal vez debí reformular la pregunta para hacerla más dificil.",
     error: "¡¡ELEGISTE AL PRESIDENTE????! AAAAAA",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿Cuál es el país con la tasa de natalidad más baja del mundo?",
-    opciones:["Groenlandia","España","Japón","SurCorea"],
+    opciones: ["Groenlandia", "España", "Japón", "SurCorea"],
     correcta: "SurCorea",
     pista: "Chinos macacos",
-    exito: "Efectivamente, Los surcoreanos podrían extinguirse para el próximo siglo, oof , ya no más kpop ni kdramas.",
-    error: "Lo siento, pero sorprendentemente el país más idealizado es el que menos hijos quiere.",
-    imagen: ""
+    exito:
+      "Efectivamente, Los surcoreanos podrían extinguirse para el próximo siglo, oof , ya no más kpop ni kdramas.",
+    error:
+      "Lo siento, pero sorprendentemente el país más idealizado es el que menos hijos quiere.",
+    imagen: "",
   },
-   {
+  {
     pregunta: "¿Dentro de qué territorio se encuentra el Vaticano?",
-    opciones:["Francia","Reino Unido","Italia","Alemania"],
+    opciones: ["Francia", "Reino Unido", "Italia", "Alemania"],
     correcta: "Italia",
     pista: "¿El papamóvil es católico?",
-    exito: "El Vaticano se encuentra en Roma, que escrito al revés es Amor, pero también se encuentra en Italia.",
+    exito:
+      "El Vaticano se encuentra en Roma, que escrito al revés es Amor, pero también se encuentra en Italia.",
     error: "Peínate.",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿En qué país se encuentra Nuevo México?",
-    opciones:["México","EEUU","SurMéxico","Perú"],
+    opciones: ["México", "EEUU", "SurMéxico", "Perú"],
     correcta: "EEUU",
     pista: "¿De qué color es el conejo blanco?",
-    exito: "Nuevo México, estado de abogados, cotrabandistas, drogas, narcotráfico y una orgullosa narcocultura, se encuentra en Estados Unidos",
+    exito:
+      "Nuevo México, estado de abogados, cotrabandistas, drogas, narcotráfico y una orgullosa narcocultura, se encuentra en Estados Unidos",
     error: "Nuevo México es un estado de Disparos Unidos, no de Mexico.",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿En qué país Nació CR7?",
-    opciones:["Brasil","Cristianolandia","Portugal","Perú"],
+    opciones: ["Brasil", "Cristianolandia", "Portugal", "Perú"],
     correcta: "Portugal",
-    pista: "CR7 habla portugués, pero aquí hay más de un país que se habla ese idioma.",
+    pista:
+      "CR7 habla portugués, pero aquí hay más de un país que se habla ese idioma.",
     exito: "Pobre CR7 tuvo crecer viendo Dragon Ball en doblaje portugués.",
     error: "CR7 nació en Portugal, no en Perú, aunque ya quisiera.",
-    imagen: ""
-   },
-   {
-    pregunta: "¿Qué país se disolvió en 1991 y dio lugar a países como Crocia, Serbia, Bosnia o Esovenia?",
-    opciones:["Yugoslavia","Kosovo","La Union Sovietica","Montenegro"],
+    imagen: "",
+  },
+  {
+    pregunta:
+      "¿Qué país se disolvió en 1991 y dio lugar a países como Crocia, Serbia, Bosnia o Esovenia?",
+    opciones: ["Yugoslavia", "Kosovo", "La Union Sovietica", "Montenegro"],
     correcta: "Yugoslavia",
-    pista: "Recuerda, uno de estos es un país que ya no está en el mapa, y hay otro que ni siquiera fue un país como tal.",
-    exito: "Me dio un perro coraje cómo un pueblo tan fuerte pudo disolverse por la corrupción de ambas potencias dominantes, lo que me hizo darme cuenta que jamás sería como mi gran ídolo Josip Broz TITO. Nunca podría unificar al pueblo cristiano con el musulmán, me dió tanta rabia como hambre, así que decidí robarle de nuevo la comida de mi hermana Maguiee.",
+    pista:
+      "Recuerda, uno de estos es un país que ya no está en el mapa, y hay otro que ni siquiera fue un país como tal.",
+    exito:
+      "Me dio un perro coraje cómo un pueblo tan fuerte pudo disolverse por la corrupción de ambas potencias dominantes, lo que me hizo darme cuenta que jamás sería como mi gran ídolo Josip Broz TITO. Nunca podría unificar al pueblo cristiano con el musulmán, me dió tanta rabia como hambre, así que decidí robarle de nuevo la comida de mi hermana Maguiee.",
     error: "Bueno, por algo estamos aquí y no estudiando letras.",
-    imagen: ""
-   },
-   {
-    pregunta: "El estrecho de Bering es el cuál según la teoría asiática de la población americana, fue un puente que se congeló durante la última glaciación de la tierra, donde los humanos primitivos cruzaron para llegar a América y poblarla, este estrecho une a Estados Unidos y a ...",
-    opciones:["Japón","Portugal","SurCorea","Rusia"],
+    imagen: "",
+  },
+  {
+    pregunta:
+      "El estrecho de Bering es el cuál según la teoría asiática de la población americana, fue un puente que se congeló durante la última glaciación de la tierra, donde los humanos primitivos cruzaron para llegar a América y poblarla, este estrecho une a Estados Unidos y a ...",
+    opciones: ["Japón", "Portugal", "SurCorea", "Rusia"],
     correcta: "Rusia",
     pista: "Tuvieron que venir de algún lado de Asia, pero ¿Cuál?",
     exito: "¡Bien! ¡Recuerdas un poco de historia al parecer!",
-    error: "Okay, tal vez te hice rebuscar mucho en los recuerdos de la infancia.",
-    imagen: ""
-   },
-   {
+    error:
+      "Okay, tal vez te hice rebuscar mucho en los recuerdos de la infancia.",
+    imagen: "",
+  },
+  {
     pregunta: "¿Cuál es la capital de España?",
-    opciones:["Madrid","Provincia De Madrid","Comunidad Autónoma de Madrid","Madrid DC"],
+    opciones: [
+      "Madrid",
+      "Provincia De Madrid",
+      "Comunidad Autónoma de Madrid",
+      "Madrid DC",
+    ],
     correcta: "Madrid",
     pista: "No te rayes",
-    exito: "En Madrid cunples tus sueños, hay trabajo por doquier, puedes tener una gran vivienda, la gente es de lo mejor y conectas con el resto... del mundo...",
+    exito:
+      "En Madrid cunples tus sueños, hay trabajo por doquier, puedes tener una gran vivienda, la gente es de lo mejor y conectas con el resto... del mundo...",
     error: "JAJA TE MAREÉ",
-    imagen: ""
-   },
-   {
-    pregunta: "¿Cuál de estos países NO forma parte de los supremos poderes del BRICS?",
-    opciones:["Brasil","India","Corea","Rusia"],
+    imagen: "",
+  },
+  {
+    pregunta:
+      "¿Cuál de estos países NO forma parte de los supremos poderes del BRICS?",
+    opciones: ["Brasil", "India", "Corea", "Rusia"],
     correcta: "Corea",
-    pista: "Qué confuso, los Brics son siglas de la letra inicial de los nombres de estos países que dominan el mundo, ¿Cuál podrá ser?",
-    exito: "OBVIAMENTE, COREA NO SE COMPARA EN PODER CON CHINA MUAJAJAJAJAJAJAJAJJAAJJAAJAJAJA!!!!",
+    pista:
+      "Qué confuso, los Brics son siglas de la letra inicial de los nombres de estos países que dominan el mundo, ¿Cuál podrá ser?",
+    exito:
+      "OBVIAMENTE, COREA NO SE COMPARA EN PODER CON CHINA MUAJAJAJAJAJAJAJAJJAAJJAAJAJAJA!!!!",
     error: "Hay un impostor entre nosotros, uno que no quiere casarse.",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "Uno de estos países habla español como su lengua principal",
-    opciones:["Guyana","Surinam","Guinea","Brasil"],
+    opciones: ["Guyana", "Surinam", "Guinea", "Brasil"],
     correcta: "Guinea",
     pista: "Identifica al país africano y habrás ganado",
-    exito: "Guinea es el unico país de África en el cual se habla español como lengua oficial.",
-    error: "Ya basta, ponte preguntas de Europa y no de otros lados que no me importan en lo más mínimo ¿Cómo esperas a que conteste estas preguntas?",
-    imagen: ""
-   },
-   {
+    exito:
+      "Guinea es el unico país de África en el cual se habla español como lengua oficial.",
+    error:
+      "Ya basta, ponte preguntas de Europa y no de otros lados que no me importan en lo más mínimo ¿Cómo esperas a que conteste estas preguntas?",
+    imagen: "",
+  },
+  {
     pregunta: "¿Qué ciudad atraviesa el muro de Berlín?",
-    opciones:["Berlín","Londres","Bélice","AlemaniaCity"],
+    opciones: ["Berlín", "Londres", "Bélice", "AlemaniaCity"],
     correcta: "Berlín",
-    pista: "Sale en un video de entrevistando españoles sobre geografía ¿Podrás acertar?",
+    pista:
+      "Sale en un video de entrevistando españoles sobre geografía ¿Podrás acertar?",
     exito: "NO ME DIGAS!!!!!",
     error: "Estaba seguro que ALemaniaCity tiene algo que ver con Berlín",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿EN qué continente está Asia?",
-    opciones:["Australia","America","Africa","Asia"],
+    opciones: ["Australia", "America", "Africa", "Asia"],
     correcta: "Asia",
     pista: "Me has pillado chaval",
-    exito: "Hubo una vez en que dibujé conn 5 años una bandera del Perú con una piedra con ojos, alas y boca, era un niño, y era la evaluación sobre dibujo por fiestras patrias, iba a sacar un 10, pero sólo por una piedra, saqué un 9, desde entonces, no soy orgullosamente yandere.",
-    error: "Más suerte para la proxima chaval, traere preguntas menos dificiles.",
-    imagen: ""
-   },
-   {
+    exito:
+      "Hubo una vez en que dibujé conn 5 años una bandera del Perú con una piedra con ojos, alas y boca, era un niño, y era la evaluación sobre dibujo por fiestras patrias, iba a sacar un 10, pero sólo por una piedra, saqué un 9, desde entonces, no soy orgullosamente yandere.",
+    error:
+      "Más suerte para la proxima chaval, traere preguntas menos dificiles.",
+    imagen: "",
+  },
+  {
     pregunta: "¿En qué planeta vivía la especie de Namekuseiyin?",
-    opciones:["Namek","Namekuseiyin","Namekusein","Tierra"],
+    opciones: ["Namek", "Namekuseiyin", "Namekusein", "Tierra"],
     correcta: "Namek",
-    pista: "Pobres los que vimos el anime, nos vamos a confundir, espero hayas leído el manga",
+    pista:
+      "Pobres los que vimos el anime, nos vamos a confundir, espero hayas leído el manga",
     exito: "Oops se me ha colado esta pregunta",
     error: "Oops se me ha colado esta pregunta",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿De qué país fue gobernante el señor Pol Pot?",
-    opciones:["Caribe","Camerún","Camboya","Colombia"],
+    opciones: ["Caribe", "Camerún", "Camboya", "Colombia"],
     correcta: "Camboya",
-    pista: "Uno de esos países sufrió un genocidio masivo que no convenía que saliera en los periódicos porque a nadie le importaba, ¿Quién podrá ser?",
+    pista:
+      "Uno de esos países sufrió un genocidio masivo que no convenía que saliera en los periódicos porque a nadie le importaba, ¿Quién podrá ser?",
     exito: "ព្រះបានបោះបង់ចោលយើងហើយ",
     error: "Cada vez se olvidan más de ellos.",
-    imagen: ""
-   },
-   {
-    pregunta: "Entre estos países con salida al mar, ¿Cuál es el más potencialmente sísmico?",
-    opciones:["Marruecos","Italia","Chile","Madagascar"],
+    imagen: "",
+  },
+  {
+    pregunta:
+      "Entre estos países con salida al mar, ¿Cuál es el más potencialmente sísmico?",
+    opciones: ["Marruecos", "Italia", "Chile", "Madagascar"],
     correcta: "Chile",
-    pista: "Es bien sabido los países que se encuentran en el cinturón de fuego son los más potencialmente sísmicos, pero ¿Cuál de ellos se encuentra en él?",
-    exito: "Una vez fui de visita a CHile y no miento cuando digo que TODOS LOS DIAS hay un temblor, una persona que no está acostumbrada a ellos de seguro se mea encima",
+    pista:
+      "Es bien sabido los países que se encuentran en el cinturón de fuego son los más potencialmente sísmicos, pero ¿Cuál de ellos se encuentra en él?",
+    exito:
+      "Una vez fui de visita a CHile y no miento cuando digo que TODOS LOS DIAS hay un temblor, una persona que no está acostumbrada a ellos de seguro se mea encima",
     error: "Ay por favor, solo hay que ver los memes de 2022",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿En que país se encuentra el Monte Everest?",
-    opciones:["Nepal","Japón","Malasia","Singapur"],
+    opciones: ["Nepal", "Japón", "Malasia", "Singapur"],
     correcta: "Nepal",
-    pista: "En realidad hay 2 países que tienen su territorio, pero aquí sólo puse uno de ellos, uno es China, y lógicamente el otro está al lado suyo",
+    pista:
+      "En realidad hay 2 países que tienen su territorio, pero aquí sólo puse uno de ellos, uno es China, y lógicamente el otro está al lado suyo",
     exito: "Nepal... la tranquila Nepal...",
-    error: "¿ALguna vez has escuchado el EAS alarm de Malasia? No lo busques porfa",
-    imagen: ""
-   },
-   {
+    error:
+      "¿ALguna vez has escuchado el EAS alarm de Malasia? No lo busques porfa",
+    imagen: "",
+  },
+  {
     pregunta: "¿Cuál es la capital de China?",
-    opciones:["Chengdu","Pekín","Hong Kong","Shangai"],
+    opciones: ["Chengdu", "Pekín", "Hong Kong", "Shangai"],
     correcta: "Pekín",
-    pista: "Todos son ciudades de CHina, pero uno de ellos se caracteriza por compartir su nombre con una especie de pato.",
-    exito: "Pekín es la capital de China, donde hay ingenieros viviendo en la calle y ya no aceptan dinero físico. China es el futuro",
+    pista:
+      "Todos son ciudades de CHina, pero uno de ellos se caracteriza por compartir su nombre con una especie de pato.",
+    exito:
+      "Pekín es la capital de China, donde hay ingenieros viviendo en la calle y ya no aceptan dinero físico. China es el futuro",
     error: "Yo no hablo Taka Taka señor... ni siquiera lo voy a intentar.",
-    imagen: ""
-   },
-   {
+    imagen: "",
+  },
+  {
     pregunta: "¿QUién es el actual presidente de Venezuela?",
-    opciones:["Donald Trump","Edmundo Gonzáles","Delcy Rodríguez","Nicolás Maduro"],
+    opciones: [
+      "Donald Trump",
+      "Edmundo Gonzáles",
+      "Delcy Rodríguez",
+      "Nicolás Maduro",
+    ],
     correcta: "Delcy Rodríguez",
-    pista: "Uno de ellos ganó las elecciones de forma legítima, pero eso no lo hace presidente, si no, el que tenga poder en el gobierno o no.",
-    exito: "Oh, me sorprendes, aunque claro, con un poco de descarte podías adivinarlo, pero si de verdad lo sabías... tú no eres de aquí... ¿Verdad?",
-    error: "No pasa nada si no lo sabes, no estás obligado a saber cosas de un país que no tiene qué y no te importa.",
-    imagen: ""
-   },
-   {
-    pregunta: "Todos saben en qué país se encuentra Macchu Picchu, pero ¿EN qué famosa región se encuentra?",
-    opciones:["Áncash","Cajamarca","Callao","Cuzco"],
+    pista:
+      "Uno de ellos ganó las elecciones de forma legítima, pero eso no lo hace presidente, si no, el que tenga poder en el gobierno o no.",
+    exito:
+      "Oh, me sorprendes, aunque claro, con un poco de descarte podías adivinarlo, pero si de verdad lo sabías... tú no eres de aquí... ¿Verdad?",
+    error:
+      "No pasa nada si no lo sabes, no estás obligado a saber cosas de un país que no tiene qué y no te importa.",
+    imagen: "",
+  },
+  {
+    pregunta:
+      "Todos saben en qué país se encuentra Macchu Picchu, pero ¿EN qué famosa región se encuentra?",
+    opciones: ["Áncash", "Cajamarca", "Callao", "Cuzco"],
     correcta: "Cuzco",
-    pista: "Si viste la peli del Emperador y sus locuras, entonces recordarás que la respuesta es mencionada muchas veces,de hecho es el nombre del protagonista",
-    exito: "Heh, lo sabías por la peli ¿No? Tal vez deba dejar de poner pistas tan sencillas, o para nada útiles.",
+    pista:
+      "Si viste la peli del Emperador y sus locuras, entonces recordarás que la respuesta es mencionada muchas veces,de hecho es el nombre del protagonista",
+    exito:
+      "Heh, lo sabías por la peli ¿No? Tal vez deba dejar de poner pistas tan sencillas, o para nada útiles.",
     error: "C kronk",
-    imagen: ""
-   },
-   {
-    pregunta: "Aquí menciono países cuyo nombre completo son más de 1 palabra, uno de ellos sí que únicamente tiene una palabra ¿Cuál es?",
-    opciones:["Salvador","Arabia","Singapur","Corea"],
+    imagen: "",
+  },
+  {
+    pregunta:
+      "Aquí menciono países cuyo nombre completo son más de 1 palabra, uno de ellos sí que únicamente tiene una palabra ¿Cuál es?",
+    opciones: ["Salvador", "Arabia", "Singapur", "Corea"],
     correcta: "Singapur",
-    pista: "No es que haya muchos países con más de 1 palabra en su nombre como para que te olvides",
-    exito: "Singapur es el siguiente país que quiero visitar, convirtieron una isla de pescadores en una potencia",
-    error: "Ni mencionar a Cabo Verde, Estados Unidos, Reino Unido, El Caribe, Nueva Guinea, etc.",
-    imagen: ""
-   }
-   
-]
+    pista:
+      "No es que haya muchos países con más de 1 palabra en su nombre como para que te olvides",
+    exito:
+      "Singapur es el siguiente país que quiero visitar, convirtieron una isla de pescadores en una potencia",
+    error:
+      "Ni mencionar a Cabo Verde, Estados Unidos, Reino Unido, El Caribe, Nueva Guinea, etc.",
+    imagen: "",
+  },
+];
 
-let preguntasPartidaGeo=[];
-let indiceActualGeo=0;
-const totalPreguntasGeo=7;
+let preguntasPartidaGeo = [];
+let indiceActualGeo = 0;
+const totalPreguntasGeo = 7;
 
 //partida de geogr
-function empezarGeografia(){
+function empezarGeografia() {
   preguntasPartidaGeo = mezclar(bancoGeografia).slice(0, totalPreguntasGeo);
-  indiceActualGeo=0;
+  indiceActualGeo = 0;
   mostrarPantalla("divGeoJuego");
   mostrarPreguntaGeo();
 }
 //funcion de mostrar pregunta geo
-function mostrarPreguntaGeo(){
+function mostrarPreguntaGeo() {
   const p = preguntasPartidaGeo[indiceActualGeo];
   document.getElementById("txtPreguntaGeo").textContent = p.pregunta;
-  document.getElementById("txtProgresoGeo").textContent = "Pregunta " + (indiceActualGeo + 1) + " de " + totalPreguntasGeo;
+  document.getElementById("txtProgresoGeo").textContent =
+    "Pregunta " + (indiceActualGeo + 1) + " de " + totalPreguntasGeo;
 
   const imgGeo = document.getElementById("imgGeo");
   if (imgGeo) {
@@ -608,11 +659,13 @@ function mostrarPreguntaGeo(){
     boton.style.padding = "12px 24px";
     boton.style.fontSize = "18px";
     boton.style.cursor = "pointer";
-    boton.onclick = function () { responderGeo(opcion); };
+    boton.onclick = function () {
+      responderGeo(opcion);
+    };
     contenedor.appendChild(boton);
   }
 }
-function mostrarPistaGeo(){
+function mostrarPistaGeo() {
   const p = preguntasPartidaGeo[indiceActualGeo];
   const divPista = document.getElementById("divPistaGeo");
   const txtPista = document.getElementById("txtPistaGeo");
@@ -620,11 +673,11 @@ function mostrarPistaGeo(){
   txtPista.textContent = p.pista;
   divPista.style.display = divPista.style.display === "none" ? "block" : "none";
 }
-function responderGeo(opcionElegida){
+function responderGeo(opcionElegida) {
   const p = preguntasPartidaGeo[indiceActualGeo];
   const contenedor = document.getElementById("divOpcionesGeo");
 
-  if (opcionElegida === p.correcta){
+  if (opcionElegida === p.correcta) {
     contenedor.innerHTML = "";
 
     const mensaje = document.createElement("p");
@@ -638,34 +691,33 @@ function responderGeo(opcionElegida){
     btn.style.padding = "10px 22px";
     btn.style.fontSize = "18px";
     btn.style.cursor = "pointer";
-    btn.onclick = function(){
+    btn.onclick = function () {
       indiceActualGeo++;
-      if (indiceActualGeo >= totalPreguntasGeo){
+      if (indiceActualGeo >= totalPreguntasGeo) {
         mostrarVictoriaGeo();
-      }
-      else{
+      } else {
         mostrarPreguntaGeo();
       }
     };
     contenedor.appendChild(btn);
-  }
-  else{
+  } else {
     mostrarGameOverGeo(p.error);
   }
 }
 
 //frases aleatorias
-const frasesDerrotaGeo=[
+const frasesDerrotaGeo = [
   "Vamos, tienes que demostrar que los españoles son los mejores en geografría básica!!",
   "El mundo es tan grande y los guisantes tan pequeños, decía un lanzaguisantes mientras veía el cielo, lo veía y se sentía pequeño, porque era un lanzaguisantes.",
   "Lástima, simplemente podías usar IA, aqui no hya limite de tiempo, los tramposos ya no somos mal vistos.",
   "Había una vez un ángel, que brillaba, que brillaba y ya no brillaba, llegó un día en que se asimiló.",
   "aeiou",
   "CLICK AQUI PARA VER UN REPLAY (mentira)",
-  "Carlos estaría decepcionado"
-]
-function mostrarGameOverGeo(fraseError){
-  const aleatoria = frasesDerrotaGeo[Math.floor(Math.random()*frasesDerrotaGeo.length)];
+  "Carlos estaría decepcionado",
+];
+function mostrarGameOverGeo(fraseError) {
+  const aleatoria =
+    frasesDerrotaGeo[Math.floor(Math.random() * frasesDerrotaGeo.length)];
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "FIN DEL JUEGO";
 
@@ -673,17 +725,353 @@ function mostrarGameOverGeo(fraseError){
   document.getElementById("txtFraseBoguiee").textContent = aleatoria;
   mostrarPantalla("divGameOver");
 }
-function mostrarVictoriaGeo(){
+function mostrarVictoriaGeo() {
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Yay";
-  document.getElementById("txtfraseGameOver").textContent = "Resolviste las 7 preguntas de geografia sin fallar yay";
-  document.getElementById("txtFraseBoguiee").textContent = "¡Wow, definitivamente eres un terrícola!";
+  document.getElementById("txtfraseGameOver").textContent =
+    "Resolviste las 7 preguntas de geografia sin fallar yay";
+  document.getElementById("txtFraseBoguiee").textContent =
+    "¡Wow, definitivamente eres un terrícola!";
   mostrarPantalla("divGameOver");
 }
 //boton de volver al panel de geo
-function confirmarVolverGeo(){
-  const seguro = confirm ("si vuelves ahora perderas el progreso oooooh non");
+function confirmarVolverGeo() {
+  const seguro = confirm("si vuelves ahora perderas el progreso oooooh non");
   if (seguro) {
     mostrarPantalla("divPanel");
   }
+}
+
+//TERCER MODO DE JUEGO HISTORIAS, ESTE ES EL BANCO DE HISTORIAS
+//por ahora será una hsitoria esta esta generada con ia, pero la plantilla se entiende para hacer personalizadas
+const historias = {
+  amigo: {
+    titulo: "Una tarde con tu amigo",
+    panelInicial: "inicio",
+    paneles: {
+      inicio: {
+        fondo: "https://picsum.photos/seed/parque/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "", img: "" },
+          { nombre: "", img: "" },
+        ],
+        hablante: 0,
+        dialogo:
+          "¡Hey, {nombre}! Por fin acabaron las clases. No tengo nada que hacer esta tarde...",
+        siguiente: "plan",
+      },
+
+      plan: {
+        fondo: "https://picsum.photos/seed/parque/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "", img: "" },
+          { nombre: "", img: "" },
+        ],
+        hablante: 0,
+        dialogo: "¿Qué te parece si hacemos algo juntos? ¿Tú qué prefieres?",
+        opciones: [
+          { texto: "Ir a casa a jugar videojuegos", siguiente: "casa_1" },
+          { texto: "Salir a un bar", siguiente: "bar_1" },
+        ],
+      },
+
+      // ── Rama CASA ──
+      casa_1: {
+        fondo: "https://picsum.photos/seed/salon/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 0,
+        dialogo:
+          "¡Buena idea! Aquí en mi casa tengo el último juego que salió.",
+        siguiente: "casa_2",
+      },
+      casa_2: {
+        fondo: "https://picsum.photos/seed/salon/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 1,
+        dialogo: "(Te sientas en el sofá) ¡Vamos a darlo todo, {nombre}!",
+        siguiente: "casa_final",
+      },
+      casa_final: {
+        fondo: "https://picsum.photos/seed/salon/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 0,
+        dialogo:
+          "¡Qué tarde tan épica! Ganaste 3 de 5 partidas. Repetimos mañana, ¿eh?",
+        final: true,
+        mensajeFinal:
+          "Pasaste una tarde genial jugando videojuegos con Leo. Una amistad que se fortalece. ",
+      },
+
+      // ── Rama BAR ──
+      bar_1: {
+        fondo: "https://picsum.photos/seed/bar/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 0,
+        dialogo: "¡Un bar! Buena elección. Conozco uno cerca que no está mal.",
+        siguiente: "bar_2",
+      },
+      bar_2: {
+        fondo: "https://picsum.photos/seed/bar/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+          {
+            nombre: "Camarero",
+            img: "https://picsum.photos/seed/mesero/200/320",
+          },
+        ],
+        hablante: 2,
+        dialogo: "Buenas noches, ¿qué les traigo?",
+        siguiente: "bar_3",
+      },
+      bar_3: {
+        fondo: "https://picsum.photos/seed/bar/1200/800",
+        personajes: [
+          { nombre: "Leo", img: "https://picsum.photos/seed/leo/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+          {
+            nombre: "Camarero",
+            img: "https://picsum.photos/seed/mesero/200/320",
+          },
+        ],
+        hablante: 0,
+        dialogo:
+          "{nombre}, ¿qué te parece si pedimos algo y hablamos un rato tranquilos?",
+        final: true,
+        mensajeFinal:
+          "Terminaste la noche en el bar con Leo. A veces lo simple es lo mejor.",
+      },
+    },
+  },
+
+  examen: {
+    titulo: "El examen sorpresa",
+    panelInicial: "inicio",
+    paneles: {
+      inicio: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Profe", img: "https://picsum.photos/seed/profe/200/320" },
+        ],
+        hablante: 0,
+        dialogo:
+          "Buenos días, {nombre}. Hoy hay examen sorpresa de matemáticas. ¡Saca una hoja!",
+        siguiente: "decision",
+      },
+      decision: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Profe", img: "https://picsum.photos/seed/profe/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 1,
+        dialogo: "¿Qué haces? No estudié nada...",
+        opciones: [
+          { texto: "Intentar resolverlo con calma", siguiente: "calma_1" },
+          { texto: "Hacer una pregunta al profe", siguiente: "pregunta_1" },
+        ],
+      },
+      calma_1: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 0,
+        dialogo:
+          "(Respiras hondo) Vale... voy a leer cada pregunta con calma. Puedo con esto.",
+        siguiente: "calma_final",
+      },
+      calma_final: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Profe", img: "https://picsum.photos/seed/profe/200/320" },
+        ],
+        hablante: 0,
+        dialogo: "¡Muy bien, {nombre}! Aprobaste con un 8. Te felicito.",
+        final: true,
+        mensajeFinal:
+          "Mantuviste la calma y aprobaste. La actitud importa tanto como el estudio. ",
+      },
+      pregunta_1: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Profe", img: "https://picsum.photos/seed/profe/200/320" },
+          { nombre: "Tú", img: "https://picsum.photos/seed/yo/200/320" },
+        ],
+        hablante: 1,
+        dialogo: "Profe, ¿puede explicarme de nuevo el ejercicio 3?",
+        siguiente: "pregunta_final",
+      },
+      pregunta_final: {
+        fondo: "https://picsum.photos/seed/clase/1200/800",
+        personajes: [
+          { nombre: "Profe", img: "https://picsum.photos/seed/profe/200/320" },
+        ],
+        hablante: 0,
+        dialogo:
+          "Claro, {nombre}. Preguntar no es malo, es de sabios. Ahora inténtalo.",
+        final: true,
+        mensajeFinal:
+          "Preguntaste a tiempo y aprendiste algo nuevo. Aprobar fue solo la consecuencia. ",
+      },
+    },
+  },
+};
+//Más historias pueden añadirse luego
+
+//codigo para iniciar la historia
+
+// Estado del modo charla
+let historiaActual = null; // objeto de la historia en curso
+let historiaActualClave = ""; // para el "reintentar nivel"
+let panelActualId = ""; // id del panel que se está mostrando
+
+// ===== Menú de selección de historia =====
+function mostrarSeleccionHistoria() {
+  const cont = document.getElementById("listaHistorias");
+  cont.innerHTML = "";
+
+  for (const clave in historias) {
+    const h = historias[clave];
+    const btn = document.createElement("button");
+    btn.textContent = "📖 " + h.titulo;
+    btn.style.cssText =
+      "padding: 20px 30px; font-size: 18px; cursor: pointer; " +
+      "background-color: #e8f0ff; border: 2px solid #4a6fa5; border-radius: 10px; min-width: 240px;";
+    btn.onclick = function () {
+      iniciarHistoria(clave);
+    };
+    cont.appendChild(btn);
+  }
+
+  mostrarPantalla("divSeleccionHistoria");
+}
+
+// ===== Iniciar una historia =====
+function iniciarHistoria(clave) {
+  historiaActual = historias[clave];
+  historiaActualClave = clave;
+  document.getElementById("txtNombreNivel").textContent = historiaActual.titulo;
+  mostrarPantalla("divCharla");
+  irAPanel(historiaActual.panelInicial);
+}
+
+// ===== Ir a un panel =====
+function irAPanel(id) {
+  const p = historiaActual.paneles[id];
+  if (!p) {
+    console.warn("Panel no existe:", id);
+    return;
+  }
+
+  // Si es un final, mostramos pantalla de final
+  if (p.final) {
+    mostrarFinalCharla(p.mensajeFinal || "Fin de la historia.");
+    return;
+  }
+
+  panelActualId = id;
+  renderizarPanel(p);
+}
+
+// ===== Renderizar un panel =====
+function renderizarPanel(p) {
+  // 1. Fondo
+  document.getElementById("divCharla").style.backgroundImage =
+    "url('" + p.fondo + "')";
+
+  // 2. Personajes (3 slots)
+  for (let i = 0; i < 3; i++) {
+    const el = document.getElementById("charImg" + (i + 1));
+    const per = p.personajes[i];
+    if (per && per.img) {
+      el.src = per.img;
+      el.style.display = "block";
+    } else {
+      el.src = "";
+      el.style.display = "none";
+    }
+  }
+
+  // 3. Hablante y diálogo (reemplazando {nombre})
+  const nombreHablante = p.personajes[p.hablante].nombre;
+  document.getElementById("nombreHablante").textContent = nombreHablante;
+  document.getElementById("textoDialogo").textContent = reemplazarNombre(
+    p.dialogo,
+  );
+
+  // 4. Opciones
+  const cajaOpc = document.getElementById("cajaOpciones");
+  cajaOpc.innerHTML = "";
+
+  if (p.opciones && p.opciones.length > 0) {
+    for (const op of p.opciones) {
+      const btn = document.createElement("button");
+      btn.textContent = op.texto;
+      btn.style.cssText =
+        "padding: 12px 20px; font-size: 16px; cursor: pointer; text-align: left; " +
+        "background-color: white; border: 2px solid #333; border-radius: 10px;";
+      btn.onclick = function () {
+        irAPanel(op.siguiente);
+      };
+      cajaOpc.appendChild(btn);
+    }
+    document.getElementById("cajaDialogo").style.cursor = "default";
+  } else {
+    document.getElementById("cajaDialogo").style.cursor = "pointer";
+  }
+}
+
+// ===== Avanzar el panel al hacer clic en el cuadro de diálogo =====
+function avanzarPanel() {
+  const p = historiaActual.paneles[panelActualId];
+
+  // Si hay opciones, NO avanza (el jugador debe elegir)
+  if (p.opciones && p.opciones.length > 0) return;
+
+  // Si hay "siguiente", va a él
+  if (p.siguiente) {
+    irAPanel(p.siguiente);
+  } else {
+    // Sin opciones y sin siguiente: es final implícito
+    mostrarFinalCharla("Fin de la historia.");
+  }
+}
+
+// ===== Pantalla de final =====
+function mostrarFinalCharla(mensaje) {
+  document.getElementById("txtMensajeFinalCharla").textContent = mensaje;
+  mostrarPantalla("divFinalCharla");
+}
+
+// ===== Reintentar la misma historia =====
+function reintentarNivel() {
+  iniciarHistoria(historiaActualClave);
+}
+
+// ===== Volver al panel desde dentro de la historia =====
+function confirmarVolverCharla() {
+  const seguro = confirm(
+    "Si vuelves al panel ahora, perderás el progreso de esta historia. ¿Seguro?",
+  );
+  if (seguro) mostrarPantalla("divPanel");
+}
+
+// ===== Helper para reemplazar {nombre} =====
+function reemplazarNombre(texto) {
+  return texto.replace(/\{nombre\}/g, nombreJugador || "jugador");
 }
