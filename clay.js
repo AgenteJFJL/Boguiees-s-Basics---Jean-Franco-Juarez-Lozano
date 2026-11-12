@@ -388,18 +388,17 @@ const bancoGeografia = [
     pista: "EL unico de ellos que no habla español",
     exito: "¡Brasiul o macaco!",
     error: "Mexico no es de América del Sur, tonto.",
-    imagen: "",
+    imagen: "/pictures/sudamerica.png",
   },
   {
     pregunta:
       "¿Cómo se llama aquel planeta que en 2006 dejó de serlo en nuestro vecindario planetario?",
     opciones: ["Caronte", "Putín", "Plutón", "Calisto"],
     correcta: "Plutón",
-    pista:
-      "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
+    pista: "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
     exito: "Tal vez debí reformular la pregunta para hacerla más dificil.",
     error: "¡¡ELEGISTE AL PRESIDENTE????! AAAAAA",
-    imagen: "",
+    imagen: "/pictures/pluton.png",
   },
   {
     pregunta: "¿Cuál es el país con la tasa de natalidad más baja del mundo?",
@@ -410,7 +409,7 @@ const bancoGeografia = [
       "Efectivamente, Los surcoreanos podrían extinguirse para el próximo siglo, oof , ya no más kpop ni kdramas.",
     error:
       "Lo siento, pero sorprendentemente el país más idealizado es el que menos hijos quiere.",
-    imagen: "",
+    imagen: "/pictures/noniños.png",
   },
   {
     pregunta: "¿Dentro de qué territorio se encuentra el Vaticano?",
@@ -420,7 +419,7 @@ const bancoGeografia = [
     exito:
       "El Vaticano se encuentra en Roma, que escrito al revés es Amor, pero también se encuentra en Italia.",
     error: "Peínate.",
-    imagen: "",
+    imagen: "/pictures/papamovil.png",
   },
   {
     pregunta: "¿En qué país se encuentra Nuevo México?",
@@ -430,7 +429,7 @@ const bancoGeografia = [
     exito:
       "Nuevo México, estado de abogados, cotrabandistas, drogas, narcotráfico y una orgullosa narcocultura, se encuentra en Estados Unidos",
     error: "Nuevo México es un estado de Disparos Unidos, no de Mexico.",
-    imagen: "",
+    imagen: "/pictures/rompiendomalo.png",
   },
   {
     pregunta: "¿En qué país Nació CR7?",
@@ -440,7 +439,7 @@ const bancoGeografia = [
       "CR7 habla portugués, pero aquí hay más de un país que se habla ese idioma.",
     exito: "Pobre CR7 tuvo crecer viendo Dragon Ball en doblaje portugués.",
     error: "CR7 nació en Portugal, no en Perú, aunque ya quisiera.",
-    imagen: "",
+    imagen: "/pictures/cr7.jpg",
   },
   {
     pregunta:
@@ -452,7 +451,7 @@ const bancoGeografia = [
     exito:
       "Me dio un perro coraje cómo un pueblo tan fuerte pudo disolverse por la corrupción de ambas potencias dominantes, lo que me hizo darme cuenta que jamás sería como mi gran ídolo Josip Broz TITO. Nunca podría unificar al pueblo cristiano con el musulmán, me dió tanta rabia como hambre, así que decidí robarle de nuevo la comida de mi hermana Maguiee.",
     error: "Bueno, por algo estamos aquí y no estudiando letras.",
-    imagen: "",
+    imagen: "/pictures/yugoslavia.png",
   },
   {
     pregunta:
