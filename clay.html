@@ -63,6 +63,10 @@
         transform 140ms ease;
     }
 
+    #cajaPanel .boton + .boton {
+      margin-left: 10px;
+    }
+
     button:hover {
       color: var(--dark);
       background: var(--gold);
@@ -645,14 +649,19 @@
       style="display: none; justify-content: center; gap: 40px; padding: 60px"
     >
       <img src="" alt="Boguiee te saluda!!" />
-      <div>
+      <div id="cajaPanel">
         <h1>¡Bienvenido!</h1>
         <p class="atributo">Nombre:</p>
         <span id="presentNombre" class="txtNombre"></span>
         <p class="atributo">Edad:</p>
         <span id="presentEdad" class="Años"></span>
+        <p class="atributo">Fecha de nacimiento:</p>
+        <span id="presentNacimiento"></span>
+        <p class="atributo">Tus logros:</p>
+        <span id="presentRecord"></span>
         <h3>¡Ahora puedes juegar!</h3>
         <button class="boton" onclick="selectModo()">Continuar</button>
+        <button class="boton" onclick="abrirVentanaInfo()">Ver mi ficha</button>
       </div>
     </div>
     <!--Cuarto div, selecciona el modo, está oculto-->
@@ -677,6 +686,7 @@
         <button onclick="mostrarSeleccionHistoria()" class="boton">
           ¡Historias!
         </button>
+        <button onclick="abrirVentanaInfo()" class="boton">Mi ficha y ayuda</button>
       </div>
     </div>
 
@@ -697,12 +707,12 @@
         <button
           type="button"
           onclick="mostrarPista()"
-          title="Ver pista"
+          title="Ver pista (cuesta 25 puntos)"
           aria-label="Mostrar u ocultar pista"
           class="mates-bombilla bombilla"
         >
           <span class="bombilla-icon" aria-hidden="true">💡</span>
-          <span class="bombilla-label">Pista</span>
+          <span class="bombilla-label">Pista (-25)</span>
         </button>
       </div>
       <div id="divPista" class="mates-pista" style="display: none">
@@ -738,6 +748,7 @@
       <div style="padding: 10px 20px">
         <span id="txtFraseBoguiee" class="Boguiee"></span>
       </div>
+      <p id="txtPuntuacionFinal" style="font-size: 20px; font-weight: bold; margin: 0"></p>
 
       <button class="boton" onclick="volverPanel()">Volver al panel</button>
     </div>
@@ -771,12 +782,12 @@
         <button
           type="button"
           onclick="mostrarPistaGeo()"
-          title="Ver pista"
+          title="Ver pista (cuesta 25 puntos)"
           aria-label="Mostrar u ocultar pista"
           class="bombilla"
         >
           <span class="bombilla-icon" aria-hidden="true">💡</span>
-          <span class="bombilla-label">Pista</span>
+          <span class="bombilla-label">Pista (-25)</span>
         </button>
       </div>
       <!--pista-->

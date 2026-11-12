@@ -1,5 +1,21 @@
 // edicion par ahacer que el nombre sea variable global
 let nombreJugador = "";
+let edadJugador = 0; // la edad calculada, la usamos en el panel y en la ventana
+let fechaNacimiento = null; // objeto Date con la fecha de nacimiento
+
+// ===== VARIABLES DEL SISTEMA DE PUNTUACION =====
+let puntuacion = 0; // puntos de la partida actual
+let pistaUsada = false; // para cobrar la pista solo una vez por pregunta
+const PUNTOS_BASE = 100; // lo que vale acertar una pregunta
+const PENALIZACION_PISTA = 25; // lo que cuesta ver una pista
+
+// ===== COOKIE: al abrir la página recuperamos el último nombre usado =====
+// (el script tiene defer, así que el HTML ya está cargado cuando llegamos aquí)
+const nombreGuardado = leerCookie("jugador");
+if (nombreGuardado !== "") {
+  document.getElementById("nombreInput").value = nombreGuardado;
+}
+
 //primero escuchamos el click del boton enviar
 document.getElementById("botonEnviar").addEventListener("click", function () {
   //aqui conseguimos las variables constantes dle nombre y la fecha
@@ -14,6 +30,12 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
   //con metodos de Date, calculamos la edad
   const hoy = new Date();
   const nacimiento = new Date(fecha + "T00:00:00");
+
+  //fecha inválida o que no es anterior a la actual -> denegado
+  if (isNaN(nacimiento.getTime()) || nacimiento >= hoy) {
+    accesoDenegado();
+    return;
+  }
   let edad = hoy.getFullYear() - nacimiento.getFullYear();
 
   const cumpleanosEsteAnio = new Date(
@@ -27,16 +49,21 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
   }
 
   //ahora validamos la edad minima
-  if (edad < 10) {
+  //(también descartamos edades absurdas, como un año 0001)
+  if (edad < 10 || edad > 120) {
     accesoDenegado();
     return;
   }
   //formatear el nombre con métodos string
-  nombreJugador = nombreAn.trim();
+  nombreJugador = formatearNombre(nombreAn);
+  edadJugador = edad;
+  fechaNacimiento = nacimiento;
 
-  //mostramos los nombres en pantalla en el panel
-  document.getElementById("presentNombre").textContent = nombreJugador;
-  document.getElementById("presentEdad").textContent = edad;
+  //COOKIE: guardamos el nombre 30 días para recordarlo la próxima vez
+  guardarCookie("jugador", nombreJugador, 30);
+
+  //mostramos los datos en el panel y lo personalizamos con estilos
+  personalizarPanel();
   //si todo salio bien, será el panel el que se muestre y los demás se ocultarán
   mostrarPantalla("divPanel");
 });
@@ -59,12 +86,6 @@ function selectModo() {
 function volverPanel() {
   mostrarPantalla("divPanel");
 }
-//boton del div del juego
-function empezarMates() {
-  mostrarPantalla("divJuego");
-  mostrarPregunta();
-}
-
 function mostrarPantalla(id) {
   if (!id) return;
 
@@ -92,6 +113,234 @@ function mostrarPantalla(id) {
   if (el) {
     el.style.display = "flex";
   }
+  prepararPantalla(id);
+}
+
+// ============================================================
+//  PERFIL, PUNTUACION, ALMACENAMIENTO Y VENTANA ADICIONAL
+// ============================================================
+
+// ----- Formatear el nombre con métodos de String -----
+// "  jEAN franco " -> "Jean Franco"
+function formatearNombre(texto) {
+  const palabras = texto.trim().toLowerCase().split(" ");
+  const resultado = [];
+  for (let i = 0; i < palabras.length; i++) {
+    const palabra = palabras[i];
+    if (palabra !== "") {
+      // primera letra en mayúscula + el resto tal cual
+      resultado.push(palabra.charAt(0).toUpperCase() + palabra.slice(1));
+    }
+  }
+  return resultado.join(" ");
+}
+
+// ----- Panel de bienvenida: datos + estilos según el jugador -----
+function personalizarPanel() {
+  document.getElementById("presentNombre").textContent = nombreJugador;
+  document.getElementById("presentEdad").textContent = edadJugador + " años";
+
+  // más métodos de Date: toLocaleDateString y getDay
+  const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  document.getElementById("presentNacimiento").textContent =
+    fechaNacimiento.toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }) +
+    " (era " +
+    dias[fechaNacimiento.getDay()] +
+    ")";
+
+  // ESTILO 1: el color de fondo depende del nombre
+  // sumamos el código de cada letra y lo usamos como tono (0-360)
+  let suma = 0;
+  for (let i = 0; i < nombreJugador.length; i++) {
+    suma += nombreJugador.charCodeAt(i);
+  }
+  const tono = suma % 360;
+  const caja = document.getElementById("cajaPanel");
+  caja.style.backgroundColor = "hsl(" + tono + ", 70%, 85%)";
+  caja.style.border = "3px solid hsl(" + tono + ", 50%, 40%)";
+  caja.style.borderRadius = "14px";
+
+  // ESTILO 2: el color del texto depende de la edad
+  let colorTexto = "#0b3d91"; // menores de 18: azul
+  if (edadJugador >= 60) {
+    colorTexto = "#1b5e20"; // 60 o más: verde
+  } else if (edadJugador >= 18) {
+    colorTexto = "#6a1b1b"; // adultos: granate
+  }
+  caja.style.color = colorTexto;
+  const etiquetas = caja.querySelectorAll(".atributo");
+  for (let i = 0; i < etiquetas.length; i++) {
+    etiquetas[i].style.color = colorTexto;
+  }
+}
+
+// récord y misiones del panel (se refresca cada vez que se vuelve al panel)
+function actualizarPanel() {
+  const misiones = leerMisiones();
+  document.getElementById("presentRecord").textContent =
+    "Récord: " + obtenerRecord() + " puntos | Misiones completadas: " + misiones.length;
+}
+
+// se llama desde mostrarPantalla cada vez que se cambia de pantalla
+function prepararPantalla(id) {
+  if (id === "divPanel") {
+    actualizarPanel();
+  }
+  if (id === "divGameOver") {
+    document.getElementById("txtPuntuacionFinal").textContent =
+      "Puntuación final: " + puntuacion + " | Récord: " + obtenerRecord();
+  }
+}
+
+// ----- COOKIES -----
+function guardarCookie(nombre, valor, dias) {
+  const caduca = new Date();
+  caduca.setDate(caduca.getDate() + dias); // hoy + N días
+  document.cookie =
+    nombre +
+    "=" +
+    encodeURIComponent(valor) +
+    "; expires=" +
+    caduca.toUTCString() +
+    "; path=/";
+}
+
+function leerCookie(nombre) {
+  const partes = document.cookie.split(";");
+  for (let i = 0; i < partes.length; i++) {
+    const parte = partes[i].trim();
+    if (parte.startsWith(nombre + "=")) {
+      return decodeURIComponent(parte.substring(nombre.length + 1));
+    }
+  }
+  return "";
+}
+
+// ----- LOCALSTORAGE (récord y misiones) y SESSIONSTORAGE (partida actual) -----
+function obtenerRecord() {
+  return Number(localStorage.getItem("recordMaximo")) || 0;
+}
+
+// las misiones completadas se guardan en un ARRAY (como texto JSON)
+function leerMisiones() {
+  const guardado = localStorage.getItem("misiones");
+  if (!guardado) return [];
+  try {
+    return JSON.parse(guardado);
+  } catch (e) {
+    return [];
+  }
+}
+
+function registrarMision(nombre) {
+  const misiones = leerMisiones();
+  if (!misiones.includes(nombre)) {
+    misiones.push(nombre);
+    localStorage.setItem("misiones", JSON.stringify(misiones));
+  }
+}
+
+// guarda la puntuación actual (sessionStorage) y actualiza el récord (localStorage)
+function guardarPuntuacion() {
+  sessionStorage.setItem("puntuacion", puntuacion);
+  localStorage.setItem("recordMaximo", Math.max(obtenerRecord(), puntuacion));
+}
+
+// ----- SISTEMA DE PUNTUACION -----
+function reiniciarPuntuacion() {
+  puntuacion = 0;
+  pistaUsada = false;
+  guardarPuntuacion();
+}
+
+// acertar: 100 puntos x un multiplicador aleatorio entre 1 y 1.5, redondeado
+// devuelve un <p> con el mensaje de los puntos ganados
+function sumarPuntosRespuesta() {
+  const multiplicador = 1 + Math.random() * 0.5; // número aleatorio
+  const ganados = Math.round(PUNTOS_BASE * multiplicador); // redondeo
+  puntuacion += ganados;
+  guardarPuntuacion();
+  pistaUsada = true; // ya respondida: no se cobra más pista en esta pregunta
+
+  const mensaje = document.createElement("p");
+  mensaje.textContent =
+    "+" + ganados + " puntos (multiplicador x" + multiplicador.toFixed(2) + ")";
+  mensaje.style.fontWeight = "bold";
+  mensaje.style.color = "#1b5e20";
+  mensaje.style.width = "100%";
+  return mensaje;
+}
+
+// ver la pista cuesta puntos, pero solo la primera vez en cada pregunta
+// devuelve true si se ha cobrado
+function cobrarPista() {
+  if (pistaUsada) return true; // ya pagada en esta pregunta: se puede ver u ocultar
+  if (puntuacion < PENALIZACION_PISTA) {
+    alert("No tienes puntos suficientes para ver la pista (cuesta " + PENALIZACION_PISTA + ").");
+    return false;
+  }
+  pistaUsada = true;
+  puntuacion -= PENALIZACION_PISTA;
+  guardarPuntuacion();
+  return true;
+}
+
+function actualizarProgresoMates() {
+  document.getElementById("txtProgreso").textContent =
+    "Pregunta " + (indiceActual + 1) + " de " + totalPreguntas + " | Puntos: " + puntuacion;
+}
+
+function actualizarProgresoGeo() {
+  document.getElementById("txtProgresoGeo").textContent =
+    "Pregunta " + (indiceActualGeo + 1) + " de " + totalPreguntasGeo + " | Puntos: " + puntuacion;
+}
+
+// ----- VENTANA ADICIONAL: ficha del jugador y ayuda -----
+// cambia los caracteres peligrosos del nombre para que no se interpreten como HTML
+function escaparHTML(texto) {
+  return texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function abrirVentanaInfo() {
+  const ventana = window.open("", "ventanaInfo", "width=420,height=520");
+  if (!ventana) {
+    alert("El navegador ha bloqueado la ventana emergente. Permítela e inténtalo de nuevo.");
+    return;
+  }
+  // los datos que le enviamos a la ventana
+  const puntosSesion = Number(sessionStorage.getItem("puntuacion")) || 0;
+  const misiones = leerMisiones();
+  let listaMisiones = "";
+  for (let i = 0; i < misiones.length; i++) {
+    listaMisiones += "<li>" + escaparHTML(misiones[i]) + "</li>";
+  }
+  if (listaMisiones === "") {
+    listaMisiones = "<li>Todavía ninguna</li>";
+  }
+
+  ventana.document.open();
+  ventana.document.write(
+    "<!doctype html><html lang='es'><head><meta charset='UTF-8'><title>Ficha de " +
+      escaparHTML(nombreJugador) +
+      "</title></head><body style='font-family: Georgia, serif; background:#f8efc9; padding:20px'>" +
+      "<h2>Ficha de " + escaparHTML(nombreJugador) + "</h2>" +
+      "<p><b>Edad:</b> " + edadJugador + " años</p>" +
+      "<p><b>Puntos de la partida actual:</b> " + puntosSesion + "</p>" +
+      "<p><b>Récord:</b> " + obtenerRecord() + " puntos</p>" +
+      "<p><b>Misiones completadas:</b></p><ul>" + listaMisiones + "</ul>" +
+      "<h3>Ayuda</h3>" +
+      "<ul><li>Cada acierto da entre " + PUNTOS_BASE + " y " + Math.round(PUNTOS_BASE * 1.5) + " puntos (aleatorio).</li>" +
+      "<li>Ver una pista cuesta " + PENALIZACION_PISTA + " puntos.</li>" +
+      "<li>Si fallas una pregunta, se acaba la partida.</li>" +
+      "<li>Completa los 7 aciertos para ganar la misión.</li></ul>" +
+      "<button onclick='window.close()'>Cerrar</button></body></html>",
+  );
+  ventana.document.close();
+  ventana.focus();
 }
 
 //BANCO DE PREGUNTAS, esta serán las de matematica aqui estará guardado
@@ -254,6 +503,7 @@ function mezclar(array) {
 function empezarMates() {
   preguntasPartida = mezclar(bancoMatematicas).slice(0, totalPreguntas);
   indiceActual = 0;
+  reiniciarPuntuacion();
   mostrarPantalla("divJuego");
   mostrarPregunta();
 }
@@ -262,8 +512,8 @@ function mostrarPregunta() {
   const p = preguntasPartida[indiceActual];
 
   document.getElementById("txtPregunta").textContent = p.pregunta;
-  document.getElementById("txtProgreso").textContent =
-    "Pregunta " + (indiceActual + 1) + " de " + totalPreguntas;
+  pistaUsada = false; // nueva pregunta: la pista vuelve a estar "sin usar"
+  actualizarProgresoMates();
   const divPista = document.getElementById("divPista");
   document.getElementById("txtPista").textContent = "";
   divPista.style.display = "none";
@@ -290,6 +540,10 @@ function mostrarPista() {
   const p = preguntasPartida[indiceActual];
   const divPista = document.getElementById("divPista");
 
+  // la primera vez que se ve la pista de esta pregunta, resta puntos
+  if (!cobrarPista()) return;
+  actualizarProgresoMates();
+
   document.getElementById("txtPista").textContent = p.pista;
   divPista.style.display = divPista.style.display === "none" ? "flex" : "none";
 }
@@ -306,6 +560,9 @@ function responder(opcionElegida) {
     mensaje.style.fontSize = "20px";
     mensaje.style.fontWeight = "bold";
     contenedor.appendChild(mensaje);
+    //sumamos los puntos y mostramos cuántos ha ganado
+    contenedor.appendChild(sumarPuntosRespuesta());
+    actualizarProgresoMates();
 
     const btn = document.createElement("button");
     btn.textContent = "Siguiente pregunta";
@@ -349,6 +606,7 @@ function mostrarDerrota(mensajeError) {
   mostrarPantalla("divGameOver");
 }
 function mostrarVictoria() {
+  registrarMision("Matemáticas"); // localStorage: misión completada
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "EXITOTO";
   titulo.style.fontWeight = "bold";
@@ -378,7 +636,7 @@ const bancoGeografia = [
     pista: "",
     exito: "",
     error: "",
-    imagen: ""
+    imagen: "pictures/.png"
    },
   */
   {
@@ -388,7 +646,7 @@ const bancoGeografia = [
     pista: "EL unico de ellos que no habla español",
     exito: "¡Brasiul o macaco!",
     error: "Mexico no es de América del Sur, tonto.",
-    imagen: "/pictures/sudamerica.png",
+    imagen: "pictures/sudamerica.png",
   },
   {
     pregunta:
@@ -398,7 +656,7 @@ const bancoGeografia = [
     pista: "Wow, una pregunta de geografía espacial,a ver si conoces el barrio solar en el que vives.",
     exito: "Tal vez debí reformular la pregunta para hacerla más dificil.",
     error: "¡¡ELEGISTE AL PRESIDENTE????! AAAAAA",
-    imagen: "/pictures/pluton.png",
+    imagen: "pictures/pluton.png",
   },
   {
     pregunta: "¿Cuál es el país con la tasa de natalidad más baja del mundo?",
@@ -409,7 +667,7 @@ const bancoGeografia = [
       "Efectivamente, Los surcoreanos podrían extinguirse para el próximo siglo, oof , ya no más kpop ni kdramas.",
     error:
       "Lo siento, pero sorprendentemente el país más idealizado es el que menos hijos quiere.",
-    imagen: "/pictures/noniños.png",
+    imagen: "pictures/noniños.png",
   },
   {
     pregunta: "¿Dentro de qué territorio se encuentra el Vaticano?",
@@ -419,7 +677,7 @@ const bancoGeografia = [
     exito:
       "El Vaticano se encuentra en Roma, que escrito al revés es Amor, pero también se encuentra en Italia.",
     error: "Peínate.",
-    imagen: "/pictures/papamovil.png",
+    imagen: "pictures/papamovil.png",
   },
   {
     pregunta: "¿En qué país se encuentra Nuevo México?",
@@ -429,7 +687,7 @@ const bancoGeografia = [
     exito:
       "Nuevo México, estado de abogados, cotrabandistas, drogas, narcotráfico y una orgullosa narcocultura, se encuentra en Estados Unidos",
     error: "Nuevo México es un estado de Disparos Unidos, no de Mexico.",
-    imagen: "/pictures/rompiendomalo.png",
+    imagen: "pictures/rompiendomalo.png",
   },
   {
     pregunta: "¿En qué país Nació CR7?",
@@ -439,7 +697,7 @@ const bancoGeografia = [
       "CR7 habla portugués, pero aquí hay más de un país que se habla ese idioma.",
     exito: "Pobre CR7 tuvo crecer viendo Dragon Ball en doblaje portugués.",
     error: "CR7 nació en Portugal, no en Perú, aunque ya quisiera.",
-    imagen: "/pictures/cr7.jpg",
+    imagen: "pictures/cr7.jpg",
   },
   {
     pregunta:
@@ -451,7 +709,7 @@ const bancoGeografia = [
     exito:
       "Me dio un perro coraje cómo un pueblo tan fuerte pudo disolverse por la corrupción de ambas potencias dominantes, lo que me hizo darme cuenta que jamás sería como mi gran ídolo Josip Broz TITO. Nunca podría unificar al pueblo cristiano con el musulmán, me dió tanta rabia como hambre, así que decidí robarle de nuevo la comida de mi hermana Maguiee.",
     error: "Bueno, por algo estamos aquí y no estudiando letras.",
-    imagen: "/pictures/yugoslavia.png",
+    imagen: "pictures/yugoslavia.png",
   },
   {
     pregunta:
@@ -462,7 +720,7 @@ const bancoGeografia = [
     exito: "¡Bien! ¡Recuerdas un poco de historia al parecer!",
     error:
       "Okay, tal vez te hice rebuscar mucho en los recuerdos de la infancia.",
-    imagen: "",
+    imagen: "pictures/bering.jpeg",
   },
   {
     pregunta: "¿Cuál es la capital de España?",
@@ -477,7 +735,7 @@ const bancoGeografia = [
     exito:
       "En Madrid cunples tus sueños, hay trabajo por doquier, puedes tener una gran vivienda, la gente es de lo mejor y conectas con el resto... del mundo...",
     error: "JAJA TE MAREÉ",
-    imagen: "",
+    imagen: "pictures/españa.jpeg",
   },
   {
     pregunta:
@@ -489,18 +747,18 @@ const bancoGeografia = [
     exito:
       "OBVIAMENTE, COREA NO SE COMPARA EN PODER CON CHINA MUAJAJAJAJAJAJAJAJJAAJJAAJAJAJA!!!!",
     error: "Hay un impostor entre nosotros, uno que no quiere casarse.",
-    imagen: "",
+    imagen: "pictures/brics.jpg",
   },
   {
     pregunta: "Uno de estos países habla español como su lengua principal",
-    opciones: ["Guyana", "Surinam", "Guinea", "Brasil"],
-    correcta: "Guinea",
+    opciones: ["Guyana", "Surinam", "Guinea Ecuatorial", "Brasil"],
+    correcta: "Guinea Ecuatorial",
     pista: "Identifica al país africano y habrás ganado",
     exito:
-      "Guinea es el unico país de África en el cual se habla español como lengua oficial.",
+      "Guinea Ecuatorial es el unico país de África en el cual se habla español como lengua oficial.",
     error:
       "Ya basta, ponte preguntas de Europa y no de otros lados que no me importan en lo más mínimo ¿Cómo esperas a que conteste estas preguntas?",
-    imagen: "",
+    imagen: "pictures/venid.jpg",
   },
   {
     pregunta: "¿Qué ciudad atraviesa el muro de Berlín?",
@@ -510,7 +768,7 @@ const bancoGeografia = [
       "Sale en un video de entrevistando españoles sobre geografía ¿Podrás acertar?",
     exito: "NO ME DIGAS!!!!!",
     error: "Estaba seguro que ALemaniaCity tiene algo que ver con Berlín",
-    imagen: "",
+    imagen: "pictures/berlin.jpg",
   },
   {
     pregunta: "¿EN qué continente está Asia?",
@@ -521,7 +779,7 @@ const bancoGeografia = [
       "Hubo una vez en que dibujé conn 5 años una bandera del Perú con una piedra con ojos, alas y boca, era un niño, y era la evaluación sobre dibujo por fiestras patrias, iba a sacar un 10, pero sólo por una piedra, saqué un 9, desde entonces, no soy orgullosamente yandere.",
     error:
       "Más suerte para la proxima chaval, traere preguntas menos dificiles.",
-    imagen: "",
+    imagen: "pictures/asia.png",
   },
   {
     pregunta: "¿En qué planeta vivía la especie de Namekuseiyin?",
@@ -531,7 +789,7 @@ const bancoGeografia = [
       "Pobres los que vimos el anime, nos vamos a confundir, espero hayas leído el manga",
     exito: "Oops se me ha colado esta pregunta",
     error: "Oops se me ha colado esta pregunta",
-    imagen: "",
+    imagen: "pictures/namek.jpeg",
   },
   {
     pregunta: "¿De qué país fue gobernante el señor Pol Pot?",
@@ -541,7 +799,7 @@ const bancoGeografia = [
       "Uno de esos países sufrió un genocidio masivo que no convenía que saliera en los periódicos porque a nadie le importaba, ¿Quién podrá ser?",
     exito: "ព្រះបានបោះបង់ចោលយើងហើយ",
     error: "Cada vez se olvidan más de ellos.",
-    imagen: "",
+    imagen: "pictures/pol.jpeg",
   },
   {
     pregunta:
@@ -553,7 +811,7 @@ const bancoGeografia = [
     exito:
       "Una vez fui de visita a CHile y no miento cuando digo que TODOS LOS DIAS hay un temblor, una persona que no está acostumbrada a ellos de seguro se mea encima",
     error: "Ay por favor, solo hay que ver los memes de 2022",
-    imagen: "",
+    imagen: "pictures/CinturonDeFuego.jpg",
   },
   {
     pregunta: "¿En que país se encuentra el Monte Everest?",
@@ -564,7 +822,7 @@ const bancoGeografia = [
     exito: "Nepal... la tranquila Nepal...",
     error:
       "¿ALguna vez has escuchado el EAS alarm de Malasia? No lo busques porfa",
-    imagen: "",
+    imagen: "pictures/everest.png",
   },
   {
     pregunta: "¿Cuál es la capital de China?",
@@ -575,7 +833,7 @@ const bancoGeografia = [
     exito:
       "Pekín es la capital de China, donde hay ingenieros viviendo en la calle y ya no aceptan dinero físico. China es el futuro",
     error: "Yo no hablo Taka Taka señor... ni siquiera lo voy a intentar.",
-    imagen: "",
+    imagen: "pictures/pekin.jpg",
   },
   {
     pregunta: "¿QUién es el actual presidente de Venezuela?",
@@ -592,7 +850,7 @@ const bancoGeografia = [
       "Oh, me sorprendes, aunque claro, con un poco de descarte podías adivinarlo, pero si de verdad lo sabías... tú no eres de aquí... ¿Verdad?",
     error:
       "No pasa nada si no lo sabes, no estás obligado a saber cosas de un país que no tiene qué y no te importa.",
-    imagen: "",
+    imagen: "pictures/caracas.jpeg",
   },
   {
     pregunta:
@@ -604,7 +862,7 @@ const bancoGeografia = [
     exito:
       "Heh, lo sabías por la peli ¿No? Tal vez deba dejar de poner pistas tan sencillas, o para nada útiles.",
     error: "C kronk",
-    imagen: "",
+    imagen: "pictures/pichu.png",
   },
   {
     pregunta:
@@ -617,7 +875,7 @@ const bancoGeografia = [
       "Singapur es el siguiente país que quiero visitar, convirtieron una isla de pescadores en una potencia",
     error:
       "Ni mencionar a Cabo Verde, Estados Unidos, Reino Unido, El Caribe, Nueva Guinea, etc.",
-    imagen: "",
+    imagen: "pictures/singapur.jpg",
   },
 ];
 
@@ -629,6 +887,7 @@ const totalPreguntasGeo = 7;
 function empezarGeografia() {
   preguntasPartidaGeo = mezclar(bancoGeografia).slice(0, totalPreguntasGeo);
   indiceActualGeo = 0;
+  reiniciarPuntuacion();
   mostrarPantalla("divGeoJuego");
   mostrarPreguntaGeo();
 }
@@ -636,8 +895,8 @@ function empezarGeografia() {
 function mostrarPreguntaGeo() {
   const p = preguntasPartidaGeo[indiceActualGeo];
   document.getElementById("txtPreguntaGeo").textContent = p.pregunta;
-  document.getElementById("txtProgresoGeo").textContent =
-    "Pregunta " + (indiceActualGeo + 1) + " de " + totalPreguntasGeo;
+  pistaUsada = false; // nueva pregunta: la pista vuelve a estar "sin usar"
+  actualizarProgresoGeo();
 
   const imgGeo = document.getElementById("imgGeo");
   if (imgGeo) {
@@ -669,6 +928,9 @@ function mostrarPistaGeo() {
   const divPista = document.getElementById("divPistaGeo");
   const txtPista = document.getElementById("txtPistaGeo");
 
+  // la primera vez que se ve la pista de esta pregunta, resta puntos
+  if (!cobrarPista()) return;
+  actualizarProgresoGeo();
   txtPista.textContent = p.pista;
   divPista.style.display = divPista.style.display === "none" ? "block" : "none";
 }
@@ -684,6 +946,9 @@ function responderGeo(opcionElegida) {
     mensaje.style.fontSize = "20px";
     mensaje.style.fontWeight = "bold";
     contenedor.appendChild(mensaje);
+    //sumamos los puntos y mostramos cuántos ha ganado
+    contenedor.appendChild(sumarPuntosRespuesta());
+    actualizarProgresoGeo();
 
     const btn = document.createElement("button");
     btn.textContent = "Siguiente";
@@ -725,6 +990,7 @@ function mostrarGameOverGeo(fraseError) {
   mostrarPantalla("divGameOver");
 }
 function mostrarVictoriaGeo() {
+  registrarMision("Geografía"); // localStorage: misión completada
   const titulo = document.getElementById("tituloFinal");
   titulo.textContent = "Yay";
   document.getElementById("txtfraseGameOver").textContent =
@@ -975,12 +1241,8 @@ function irAPanel(id) {
     return;
   }
 
-  // Si es un final, mostramos pantalla de final
-  if (p.final) {
-    mostrarFinalCharla(p.mensajeFinal || "Fin de la historia.");
-    return;
-  }
-
+  // (si es un panel final, se muestra primero su diálogo y al hacer clic
+  // pasamos a la pantalla de final, ver avanzarPanel)
   panelActualId = id;
   renderizarPanel(p);
 }
@@ -1053,6 +1315,12 @@ function avanzarPanel() {
   // Si hay opciones, NO avanza (el jugador debe elegir)
   if (p.opciones && p.opciones.length > 0) return;
 
+  // Si es un panel final, tras leer su diálogo mostramos la pantalla de final
+  if (p.final) {
+    mostrarFinalCharla(reemplazarNombre(p.mensajeFinal || "Fin de la historia."));
+    return;
+  }
+
   // Si hay "siguiente", va a él
   if (p.siguiente) {
     irAPanel(p.siguiente);
@@ -1071,6 +1339,9 @@ function manejarTeclaDialogo(event) {
 
 // ===== Pantalla de final =====
 function mostrarFinalCharla(mensaje) {
+  if (historiaActual) {
+    registrarMision("Historia: " + historiaActual.titulo); // localStorage
+  }
   document.getElementById("txtMensajeFinalCharla").textContent = mensaje;
   mostrarPantalla("divFinalCharla");
 }
