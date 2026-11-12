@@ -6,7 +6,7 @@ document.getElementById("botonEnviar").addEventListener("click", function () {
   const nombreAn = document.getElementById("nombreInput").value;
   const fecha = document.getElementById("fechaInput").value;
   //primera validacion, ver si el nombre es vacio
-  if (nombre.trim() === "" || fecha === "") {
+  if (nombreAn.trim() === "" || fecha === "") {
     accesoDenegado();
     return;
   }
@@ -139,7 +139,7 @@ const bancoMatematicas = [
     pregunta: "¿Cual es el valor de pi mas correcto?",
     opciones: ["3,1416", "3,1417", "3,1614", "3,1615"],
     correcta: "3,1416",
-    pista: "El valor está redondeado al milésimo y es par",
+    pista: "El valor está redondear a 4 decimales y es par",
     exito:
       "Jah, en primeria solo era 3,24 ... cada vez tenemos que usar más numeros...",
     error:
@@ -156,8 +156,8 @@ const bancoMatematicas = [
   {
     pregunta:
       "¿Cuál es la fórmula para hallar la altura recorrida de una caída libre? (v1= velocidad inicial, v2= velocidad final, t= tiempo)",
-    opciones: ["(v1+v2/2)*t", "(v2/2)*v1+t", "(v1*t/2)-v2", "(v1+v2+t/v2)+t"],
-    correcta: "(v1+v2/2)*t",
+    opciones: ["((v1+v2)/2)*t", "(v2/2)*v1+t", "(v1*t/2)-v2", "(v1+v2+t/v2)+t"],
+    correcta: "((v1+v2)/2)*t",
     pista: "El tiempo no es famoso por sumarse en las formulas de física",
     exito:
       "¡Vaya! ¡Realmente me has sorprendido! Creí que empezarías a maldecirnos.",
@@ -949,9 +949,7 @@ function mostrarSeleccionHistoria() {
     const h = historias[clave];
     const btn = document.createElement("button");
     btn.textContent = "📖 " + h.titulo;
-    btn.style.cssText =
-      "padding: 20px 30px; font-size: 18px; cursor: pointer; " +
-      "background-color: #e8f0ff; border: 2px solid #4a6fa5; border-radius: 10px; min-width: 240px;";
+    btn.className = "story-choice";
     btn.onclick = function () {
       iniciarHistoria(clave);
     };
@@ -994,15 +992,28 @@ function renderizarPanel(p) {
   document.getElementById("divCharla").style.backgroundImage =
     "url('" + p.fondo + "')";
 
+  // El personaje que habla va a la izquierda; los demás conservan su orden.
+  const ordenPersonajes = p.personajes.map((_, indice) => indice);
+  const indiceHablante = ordenPersonajes.indexOf(p.hablante);
+  if (indiceHablante > 0) {
+    ordenPersonajes.unshift(ordenPersonajes.splice(indiceHablante, 1)[0]);
+  }
+
   // 2. Personajes (3 slots)
   for (let i = 0; i < 3; i++) {
     const el = document.getElementById("charImg" + (i + 1));
-    const per = p.personajes[i];
+    const indicePersonaje = ordenPersonajes[i];
+    const per =
+      indicePersonaje === undefined
+        ? undefined
+        : p.personajes[indicePersonaje];
     if (per && per.img) {
       el.src = per.img;
+      el.alt = per.nombre;
       el.style.display = "block";
     } else {
       el.src = "";
+      el.alt = "";
       el.style.display = "none";
     }
   }
@@ -1019,12 +1030,11 @@ function renderizarPanel(p) {
   cajaOpc.innerHTML = "";
 
   if (p.opciones && p.opciones.length > 0) {
+    cajaOpc.style.display = "flex";
     for (const op of p.opciones) {
       const btn = document.createElement("button");
       btn.textContent = op.texto;
-      btn.style.cssText =
-        "padding: 12px 20px; font-size: 16px; cursor: pointer; text-align: left; " +
-        "background-color: white; border: 2px solid #333; border-radius: 10px;";
+      btn.className = "story-option";
       btn.onclick = function () {
         irAPanel(op.siguiente);
       };
@@ -1032,6 +1042,7 @@ function renderizarPanel(p) {
     }
     document.getElementById("cajaDialogo").style.cursor = "default";
   } else {
+    cajaOpc.style.display = "none";
     document.getElementById("cajaDialogo").style.cursor = "pointer";
   }
 }
@@ -1049,6 +1060,13 @@ function avanzarPanel() {
   } else {
     // Sin opciones y sin siguiente: es final implícito
     mostrarFinalCharla("Fin de la historia.");
+  }
+}
+
+function manejarTeclaDialogo(event) {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    avanzarPanel();
   }
 }
 
